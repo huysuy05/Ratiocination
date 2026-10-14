@@ -1,0 +1,1685 @@
+{
+ "meta": {
+  "count": 244,
+  "db_response_time_ms": 9,
+  "page": 1,
+  "per_page": 3,
+  "groups_count": null,
+  "x_query": {
+   "oql": "get works where author is (A5064858748)",
+   "oqo": {
+    "get_rows": "works",
+    "filter_rows": [
+     {
+      "column_id": "authorships.author.id",
+      "value": "A5064858748"
+     }
+    ],
+    "sort_by": [
+     {
+      "column_id": "cited_by_count",
+      "direction": "desc"
+     }
+    ]
+   },
+   "url": "/works?filter=authorships.author.id:A5064858748&sort=cited_by_count:desc&per_page=3"
+  },
+  "cost_usd": 0.0001
+ },
+ "results": [
+  {
+   "id": "https://openalex.org/W2970771982",
+   "doi": "https://doi.org/10.18653/v1/d19-1371",
+   "ids": {
+    "openalex": "https://openalex.org/W2970771982",
+    "doi": "https://doi.org/10.18653/v1/d19-1371",
+    "mag": "2970771982"
+   },
+   "title": "SciBERT: A Pretrained Language Model for Scientific Text",
+   "display_name": "SciBERT: A Pretrained Language Model for Scientific Text",
+   "publication_date": "2019-01-01",
+   "publication_year": 2019,
+   "authorships": [
+    {
+     "author_position": "first",
+     "author": {
+      "id": "https://openalex.org/A5090038537",
+      "display_name": "Iz Beltagy",
+      "orcid": null,
+      "observed_orcids": []
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I4210156221",
+       "display_name": "Allen Institute for Artificial Intelligence",
+       "ror": "https://ror.org/05w520734",
+       "country_code": "US",
+       "type": "nonprofit",
+       "lineage": [
+        "https://openalex.org/I4210156221"
+       ]
+      }
+     ],
+     "countries": [
+      "US"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Iz Beltagy",
+     "raw_affiliation_strings": [
+      "Allen Institute for Artificial Intelligence , Seattle , WA , USA",
+      "Allen Institute for Artificial Intelligence, Seattle, WA, USA"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Allen Institute for Artificial Intelligence , Seattle , WA , USA",
+       "institution_ids": [
+        "https://openalex.org/I4210156221"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Allen Institute for Artificial Intelligence, Seattle, WA, USA",
+       "institution_ids": [
+        "https://openalex.org/I4210156221"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5066588555",
+      "display_name": "Kyle Lo",
+      "orcid": "https://orcid.org/0000-0002-1804-2853",
+      "observed_orcids": [
+       "https://orcid.org/0000-0002-1804-2853"
+      ]
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I4210156221",
+       "display_name": "Allen Institute for Artificial Intelligence",
+       "ror": "https://ror.org/05w520734",
+       "country_code": "US",
+       "type": "nonprofit",
+       "lineage": [
+        "https://openalex.org/I4210156221"
+       ]
+      }
+     ],
+     "countries": [
+      "US"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Kyle Lo",
+     "raw_affiliation_strings": [
+      "Allen Institute for Artificial Intelligence , Seattle , WA , USA",
+      "Allen Institute for Artificial Intelligence, Seattle, WA, USA"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Allen Institute for Artificial Intelligence , Seattle , WA , USA",
+       "institution_ids": [
+        "https://openalex.org/I4210156221"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Allen Institute for Artificial Intelligence, Seattle, WA, USA",
+       "institution_ids": [
+        "https://openalex.org/I4210156221"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "last",
+     "author": {
+      "id": "https://openalex.org/A5064858748",
+      "display_name": "Arman Cohan",
+      "orcid": "https://orcid.org/0000-0002-8954-2724",
+      "observed_orcids": [
+       "https://orcid.org/0000-0002-8954-2724"
+      ]
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I4210156221",
+       "display_name": "Allen Institute for Artificial Intelligence",
+       "ror": "https://ror.org/05w520734",
+       "country_code": "US",
+       "type": "nonprofit",
+       "lineage": [
+        "https://openalex.org/I4210156221"
+       ]
+      }
+     ],
+     "countries": [
+      "US"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Arman Cohan",
+     "raw_affiliation_strings": [
+      "Allen Institute for Artificial Intelligence , Seattle , WA , USA",
+      "Allen Institute for Artificial Intelligence, Seattle, WA, USA"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Allen Institute for Artificial Intelligence , Seattle , WA , USA",
+       "institution_ids": [
+        "https://openalex.org/I4210156221"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Allen Institute for Artificial Intelligence, Seattle, WA, USA",
+       "institution_ids": [
+        "https://openalex.org/I4210156221"
+       ]
+      }
+     ]
+    }
+   ],
+   "topics": [
+    {
+     "id": "https://openalex.org/T10028",
+     "display_name": "Topic Modeling",
+     "score": 0.9804999828338623,
+     "subfield": {
+      "id": "https://openalex.org/subfields/1702",
+      "display_name": "Artificial Intelligence"
+     },
+     "field": {
+      "id": "https://openalex.org/fields/17",
+      "display_name": "Computer Science"
+     },
+     "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+     }
+    },
+    {
+     "id": "https://openalex.org/T11714",
+     "display_name": "Multimodal Machine Learning Applications",
+     "score": 0.0035000001080334187,
+     "subfield": {
+      "id": "https://openalex.org/subfields/1707",
+      "display_name": "Computer Vision and Pattern Recognition"
+     },
+     "field": {
+      "id": "https://openalex.org/fields/17",
+      "display_name": "Computer Science"
+     },
+     "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+     }
+    },
+    {
+     "id": "https://openalex.org/T10181",
+     "display_name": "Natural Language Processing Techniques",
+     "score": 0.0013000000035390258,
+     "subfield": {
+      "id": "https://openalex.org/subfields/1702",
+      "display_name": "Artificial Intelligence"
+     },
+     "field": {
+      "id": "https://openalex.org/fields/17",
+      "display_name": "Computer Science"
+     },
+     "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+     }
+    }
+   ],
+   "cited_by_count": 3031,
+   "referenced_works": [
+    "https://openalex.org/W1522301498",
+    "https://openalex.org/W1932742904",
+    "https://openalex.org/W2047782770",
+    "https://openalex.org/W2147994374",
+    "https://openalex.org/W2163107094",
+    "https://openalex.org/W2169099542",
+    "https://openalex.org/W2279376656",
+    "https://openalex.org/W2346452181",
+    "https://openalex.org/W2396881363",
+    "https://openalex.org/W2525778437",
+    "https://openalex.org/W2552110825",
+    "https://openalex.org/W2626778328",
+    "https://openalex.org/W2738180183",
+    "https://openalex.org/W2787560479",
+    "https://openalex.org/W2793978524",
+    "https://openalex.org/W2798373858",
+    "https://openalex.org/W2798812533",
+    "https://openalex.org/W2801930304",
+    "https://openalex.org/W2808556605",
+    "https://openalex.org/W2887672952",
+    "https://openalex.org/W2896457183",
+    "https://openalex.org/W2911489562",
+    "https://openalex.org/W2925863688",
+    "https://openalex.org/W2933655602",
+    "https://openalex.org/W2937845937",
+    "https://openalex.org/W2952867657",
+    "https://openalex.org/W2963341956",
+    "https://openalex.org/W2963571341",
+    "https://openalex.org/W2963716420",
+    "https://openalex.org/W2963718112",
+    "https://openalex.org/W2964121744",
+    "https://openalex.org/W3105491236",
+    "https://openalex.org/W3106224367",
+    "https://openalex.org/W4385245566"
+   ],
+   "locations": [
+    {
+     "id": "doi:10.18653/v1/d19-1371",
+     "doi": "https://doi.org/10.18653/v1/d19-1371",
+     "is_oa": true,
+     "landing_page_url": "https://doi.org/10.18653/v1/d19-1371",
+     "pdf_url": "https://www.aclweb.org/anthology/D19-1371.pdf",
+     "source": null,
+     "license": "cc-by",
+     "license_id": "https://openalex.org/licenses/cc-by",
+     "version": "publishedVersion",
+     "is_accepted": true,
+     "is_published": true,
+     "raw_source_name": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)",
+     "raw_type": "proceedings-article"
+    }
+   ],
+   "primary_location": {
+    "id": "doi:10.18653/v1/d19-1371",
+    "doi": "https://doi.org/10.18653/v1/d19-1371",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.18653/v1/d19-1371",
+    "pdf_url": "https://www.aclweb.org/anthology/D19-1371.pdf",
+    "source": null,
+    "license": "cc-by",
+    "license_id": "https://openalex.org/licenses/cc-by",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)",
+    "raw_type": "proceedings-article"
+   },
+   "type": "conference-paper",
+   "abstract_inverted_index": {
+    "Iz": [
+     0
+    ],
+    "Beltagy,": [
+     1
+    ],
+    "Kyle": [
+     2
+    ],
+    "Lo,": [
+     3
+    ],
+    "Arman": [
+     4
+    ],
+    "Cohan.": [
+     5
+    ],
+    "Proceedings": [
+     6
+    ],
+    "of": [
+     7
+    ],
+    "the": [
+     8,
+     19
+    ],
+    "2019": [
+     9
+    ],
+    "Conference": [
+     10,
+     23
+    ],
+    "on": [
+     11,
+     24
+    ],
+    "Empirical": [
+     12
+    ],
+    "Methods": [
+     13
+    ],
+    "in": [
+     14
+    ],
+    "Natural": [
+     15,
+     25
+    ],
+    "Language": [
+     16,
+     26
+    ],
+    "Processing": [
+     17,
+     27
+    ],
+    "and": [
+     18
+    ],
+    "9th": [
+     20
+    ],
+    "International": [
+     21
+    ],
+    "Joint": [
+     22
+    ],
+    "(EMNLP-IJCNLP).": [
+     28
+    ],
+    "2019.": [
+     29
+    ]
+   },
+   "open_access": {
+    "is_oa": true,
+    "oa_status": "gold",
+    "oa_url": "https://www.aclweb.org/anthology/D19-1371.pdf",
+    "any_repository_has_fulltext": null
+   },
+   "best_oa_location": {
+    "id": "doi:10.18653/v1/d19-1371",
+    "doi": "https://doi.org/10.18653/v1/d19-1371",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.18653/v1/d19-1371",
+    "pdf_url": "https://www.aclweb.org/anthology/D19-1371.pdf",
+    "source": null,
+    "license": "cc-by",
+    "license_id": "https://openalex.org/licenses/cc-by",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)",
+    "raw_type": "proceedings-article"
+   },
+   "is_retracted": false
+  },
+  {
+   "id": "https://openalex.org/W3015468748",
+   "doi": "https://doi.org/10.48550/arxiv.2004.05150",
+   "ids": {
+    "openalex": "https://openalex.org/W3015468748",
+    "doi": "https://doi.org/10.48550/arxiv.2004.05150",
+    "mag": "3015468748"
+   },
+   "title": "Longformer: The Long-Document Transformer",
+   "display_name": "Longformer: The Long-Document Transformer",
+   "publication_date": "2020-04-10",
+   "publication_year": 2020,
+   "authorships": [
+    {
+     "author_position": "first",
+     "author": {
+      "id": "https://openalex.org/A5090038537",
+      "display_name": "Iz Beltagy",
+      "orcid": null,
+      "observed_orcids": []
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I4210156221",
+       "display_name": "Allen Institute for Artificial Intelligence",
+       "ror": "https://ror.org/05w520734",
+       "country_code": "US",
+       "type": "nonprofit",
+       "lineage": [
+        "https://openalex.org/I4210156221"
+       ]
+      }
+     ],
+     "countries": [
+      "US"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Beltagy, Iz",
+     "raw_affiliation_strings": [
+      "ALLEN INSTITUTE FOR ARTIFICIAL INTELLIGENCE"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "ALLEN INSTITUTE FOR ARTIFICIAL INTELLIGENCE",
+       "institution_ids": [
+        "https://openalex.org/I4210156221"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5101509445",
+      "display_name": "Matthew E. Peters",
+      "orcid": "https://orcid.org/0000-0002-2105-2585",
+      "observed_orcids": [
+       "https://orcid.org/0000-0002-2105-2585"
+      ]
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I4210156221",
+       "display_name": "Allen Institute for Artificial Intelligence",
+       "ror": "https://ror.org/05w520734",
+       "country_code": "US",
+       "type": "nonprofit",
+       "lineage": [
+        "https://openalex.org/I4210156221"
+       ]
+      }
+     ],
+     "countries": [
+      "US"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Peters, Matthew E.",
+     "raw_affiliation_strings": [
+      "ALLEN INSTITUTE FOR ARTIFICIAL INTELLIGENCE"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "ALLEN INSTITUTE FOR ARTIFICIAL INTELLIGENCE",
+       "institution_ids": [
+        "https://openalex.org/I4210156221"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "last",
+     "author": {
+      "id": "https://openalex.org/A5064858748",
+      "display_name": "Arman Cohan",
+      "orcid": "https://orcid.org/0000-0002-8954-2724",
+      "observed_orcids": [
+       "https://orcid.org/0000-0002-8954-2724"
+      ]
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I4210156221",
+       "display_name": "Allen Institute for Artificial Intelligence",
+       "ror": "https://ror.org/05w520734",
+       "country_code": "US",
+       "type": "nonprofit",
+       "lineage": [
+        "https://openalex.org/I4210156221"
+       ]
+      }
+     ],
+     "countries": [
+      "US"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Cohan, Arman",
+     "raw_affiliation_strings": [
+      "ALLEN INSTITUTE FOR ARTIFICIAL INTELLIGENCE"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "ALLEN INSTITUTE FOR ARTIFICIAL INTELLIGENCE",
+       "institution_ids": [
+        "https://openalex.org/I4210156221"
+       ]
+      }
+     ]
+    }
+   ],
+   "topics": [
+    {
+     "id": "https://openalex.org/T10028",
+     "display_name": "Topic Modeling",
+     "score": 0.9082000255584717,
+     "subfield": {
+      "id": "https://openalex.org/subfields/1702",
+      "display_name": "Artificial Intelligence"
+     },
+     "field": {
+      "id": "https://openalex.org/fields/17",
+      "display_name": "Computer Science"
+     },
+     "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+     }
+    },
+    {
+     "id": "https://openalex.org/T10181",
+     "display_name": "Natural Language Processing Techniques",
+     "score": 0.0617000013589859,
+     "subfield": {
+      "id": "https://openalex.org/subfields/1702",
+      "display_name": "Artificial Intelligence"
+     },
+     "field": {
+      "id": "https://openalex.org/fields/17",
+      "display_name": "Computer Science"
+     },
+     "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+     }
+    },
+    {
+     "id": "https://openalex.org/T10036",
+     "display_name": "Advanced Neural Network Applications",
+     "score": 0.007899999618530273,
+     "subfield": {
+      "id": "https://openalex.org/subfields/1707",
+      "display_name": "Computer Vision and Pattern Recognition"
+     },
+     "field": {
+      "id": "https://openalex.org/fields/17",
+      "display_name": "Computer Science"
+     },
+     "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+     }
+    }
+   ],
+   "cited_by_count": 2082,
+   "referenced_works": [
+    "https://openalex.org/W1566289585",
+    "https://openalex.org/W2113459411",
+    "https://openalex.org/W2130942839",
+    "https://openalex.org/W2155069789",
+    "https://openalex.org/W2170973209",
+    "https://openalex.org/W2338908902",
+    "https://openalex.org/W2519091744",
+    "https://openalex.org/W2612431505",
+    "https://openalex.org/W2626778328",
+    "https://openalex.org/W2765390718",
+    "https://openalex.org/W2787560479",
+    "https://openalex.org/W2797051334",
+    "https://openalex.org/W2798240283",
+    "https://openalex.org/W2798812533",
+    "https://openalex.org/W2804032941",
+    "https://openalex.org/W2805206884",
+    "https://openalex.org/W2889787757",
+    "https://openalex.org/W2940744433",
+    "https://openalex.org/W2946567085",
+    "https://openalex.org/W2952509486",
+    "https://openalex.org/W2952809536",
+    "https://openalex.org/W2953337107",
+    "https://openalex.org/W2962369866",
+    "https://openalex.org/W2963088785",
+    "https://openalex.org/W2963341956",
+    "https://openalex.org/W2963866616",
+    "https://openalex.org/W2964110616",
+    "https://openalex.org/W2965373594",
+    "https://openalex.org/W2969605360",
+    "https://openalex.org/W2969624041",
+    "https://openalex.org/W2971008823",
+    "https://openalex.org/W2972738865",
+    "https://openalex.org/W2979196189",
+    "https://openalex.org/W2982399380",
+    "https://openalex.org/W2984864519",
+    "https://openalex.org/W2988421999",
+    "https://openalex.org/W2994673210",
+    "https://openalex.org/W2995575179",
+    "https://openalex.org/W2997517014",
+    "https://openalex.org/W2997759614",
+    "https://openalex.org/W3014438226",
+    "https://openalex.org/W3015854960",
+    "https://openalex.org/W3016915903",
+    "https://openalex.org/W3017192286",
+    "https://openalex.org/W3033182847",
+    "https://openalex.org/W3034715004",
+    "https://openalex.org/W3034772996",
+    "https://openalex.org/W3045733172",
+    "https://openalex.org/W3082274269",
+    "https://openalex.org/W3098136301",
+    "https://openalex.org/W3105055324",
+    "https://openalex.org/W3105238007",
+    "https://openalex.org/W3106298483"
+   ],
+   "locations": [
+    {
+     "id": "pmh:oai:arXiv.org:2004.05150",
+     "doi": null,
+     "is_oa": true,
+     "landing_page_url": "http://arxiv.org/abs/2004.05150",
+     "pdf_url": "https://arxiv.org/pdf/2004.05150",
+     "source": {
+      "id": "https://openalex.org/S4306400194",
+      "display_name": "arXiv (Cornell University)",
+      "issn_l": "2331-8422",
+      "issn": [
+       "2331-8422"
+      ],
+      "is_oa": true,
+      "is_in_doaj": false,
+      "is_core": false,
+      "listed_in": [],
+      "host_organization": "https://openalex.org/I205783295",
+      "host_organization_name": "Cornell University",
+      "host_organization_lineage": [
+       "https://openalex.org/I205783295"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+     },
+     "license": null,
+     "license_id": null,
+     "version": "submittedVersion",
+     "is_accepted": false,
+     "is_published": false,
+     "raw_source_name": null,
+     "raw_type": "text"
+    },
+    {
+     "id": "doi:10.48550/arxiv.2004.05150",
+     "doi": "https://doi.org/10.48550/arxiv.2004.05150",
+     "is_oa": true,
+     "landing_page_url": "https://doi.org/10.48550/arxiv.2004.05150",
+     "pdf_url": null,
+     "source": {
+      "id": "https://openalex.org/S4306400194",
+      "display_name": "arXiv (Cornell University)",
+      "issn_l": "2331-8422",
+      "issn": [
+       "2331-8422"
+      ],
+      "is_oa": true,
+      "is_in_doaj": false,
+      "is_core": false,
+      "listed_in": [],
+      "host_organization": "https://openalex.org/I205783295",
+      "host_organization_name": "Cornell University",
+      "host_organization_lineage": [
+       "https://openalex.org/I205783295"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+     },
+     "license": null,
+     "license_id": null,
+     "version": null,
+     "is_accepted": false,
+     "is_published": null,
+     "raw_source_name": null,
+     "raw_type": "Preprint"
+    },
+    {
+     "id": "doi:10.5281/zenodo.20805991",
+     "doi": "https://doi.org/10.5281/zenodo.20805991",
+     "is_oa": true,
+     "landing_page_url": "https://doi.org/10.5281/zenodo.20805991",
+     "pdf_url": null,
+     "source": {
+      "id": "https://openalex.org/S4306400562",
+      "display_name": "Zenodo (CERN European Organization for Nuclear Research)",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": true,
+      "is_in_doaj": false,
+      "is_core": false,
+      "listed_in": [],
+      "host_organization": "https://openalex.org/I67311998",
+      "host_organization_name": "European Organization for Nuclear Research",
+      "host_organization_lineage": [
+       "https://openalex.org/I67311998"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+     },
+     "license": "cc-by",
+     "license_id": "https://openalex.org/licenses/cc-by",
+     "version": null,
+     "is_accepted": false,
+     "is_published": null,
+     "raw_source_name": null,
+     "raw_type": "article-journal"
+    }
+   ],
+   "primary_location": {
+    "id": "pmh:oai:arXiv.org:2004.05150",
+    "doi": null,
+    "is_oa": true,
+    "landing_page_url": "http://arxiv.org/abs/2004.05150",
+    "pdf_url": "https://arxiv.org/pdf/2004.05150",
+    "source": {
+     "id": "https://openalex.org/S4306400194",
+     "display_name": "arXiv (Cornell University)",
+     "issn_l": "2331-8422",
+     "issn": [
+      "2331-8422"
+     ],
+     "is_oa": true,
+     "is_in_doaj": false,
+     "is_core": false,
+     "listed_in": [],
+     "host_organization": "https://openalex.org/I205783295",
+     "host_organization_name": "Cornell University",
+     "host_organization_lineage": [
+      "https://openalex.org/I205783295"
+     ],
+     "host_organization_lineage_names": [],
+     "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": null,
+    "raw_type": "text"
+   },
+   "type": "preprint",
+   "abstract_inverted_index": {
+    "The": [
+     0
+    ],
+    "quadratic": [
+     1
+    ],
+    "complexity": [
+     2
+    ],
+    "of": [
+     3
+    ],
+    "standard": [
+     4
+    ],
+    "attention": [
+     5,
+     27
+    ],
+    "(O(N²))": [
+     6
+    ],
+    "remains": [
+     7
+    ],
+    "the": [
+     8
+    ],
+    "dominant": [
+     9
+    ],
+    "bottleneck": [
+     10
+    ],
+    "for": [
+     11
+    ],
+    "training": [
+     12
+    ],
+    "and": [
+     13
+    ],
+    "deploying": [
+     14
+    ],
+    "large": [
+     15
+    ],
+    "language": [
+     16
+    ],
+    "models": [
+     17
+    ],
+    "on": [
+     18
+    ],
+    "long": [
+     19
+    ],
+    "sequences.": [
+     20
+    ],
+    "We": [
+     21
+    ],
+    "introduce": [
+     22
+    ],
+    "Murmurative": [
+     23
+    ],
+    "Attention,": [
+     24
+    ],
+    "a": [
+     25,
+     38
+    ],
+    "novel": [
+     26
+    ],
+    "mechanism": [
+     28
+    ],
+    "that": [
+     29
+    ],
+    "replaces": [
+     30
+    ],
+    "pairwise": [
+     31
+    ],
+    "token-token": [
+     32
+    ],
+    "interactions": [
+     33,
+     36
+    ],
+    "with": [
+     34
+    ],
+    "token-to-slot": [
+     35
+    ],
+    "over": [
+     37
+    ],
+    "fixed-size": [
+     39
+    ]
+   },
+   "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "https://arxiv.org/pdf/2004.05150",
+    "any_repository_has_fulltext": true
+   },
+   "best_oa_location": {
+    "id": "pmh:oai:arXiv.org:2004.05150",
+    "doi": null,
+    "is_oa": true,
+    "landing_page_url": "http://arxiv.org/abs/2004.05150",
+    "pdf_url": "https://arxiv.org/pdf/2004.05150",
+    "source": {
+     "id": "https://openalex.org/S4306400194",
+     "display_name": "arXiv (Cornell University)",
+     "issn_l": "2331-8422",
+     "issn": [
+      "2331-8422"
+     ],
+     "is_oa": true,
+     "is_in_doaj": false,
+     "is_core": false,
+     "listed_in": [],
+     "host_organization": "https://openalex.org/I205783295",
+     "host_organization_name": "Cornell University",
+     "host_organization_lineage": [
+      "https://openalex.org/I205783295"
+     ],
+     "host_organization_lineage_names": [],
+     "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": null,
+    "raw_type": "text"
+   },
+   "is_retracted": false
+  },
+  {
+   "id": "https://openalex.org/W2798240283",
+   "doi": "https://doi.org/10.18653/v1/n18-2097",
+   "ids": {
+    "openalex": "https://openalex.org/W2798240283",
+    "doi": "https://doi.org/10.18653/v1/n18-2097",
+    "mag": "2798240283"
+   },
+   "title": "A Discourse-Aware Attention Model for Abstractive Summarization of Long Documents",
+   "display_name": "A Discourse-Aware Attention Model for Abstractive Summarization of Long Documents",
+   "publication_date": "2018-01-01",
+   "publication_year": 2018,
+   "authorships": [
+    {
+     "author_position": "first",
+     "author": {
+      "id": "https://openalex.org/A5064858748",
+      "display_name": "Arman Cohan",
+      "orcid": "https://orcid.org/0000-0002-8954-2724",
+      "observed_orcids": [
+       "https://orcid.org/0000-0002-8954-2724"
+      ]
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I184565670",
+       "display_name": "Georgetown University",
+       "ror": "https://ror.org/05vzafd60",
+       "country_code": "US",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I184565670"
+       ]
+      }
+     ],
+     "countries": [
+      "US"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Arman Cohan",
+     "raw_affiliation_strings": [
+      "Department of Computer Science , Georgetown University , Washington , DC",
+      "Georgetown University, Washington, United States"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Department of Computer Science , Georgetown University , Washington , DC",
+       "institution_ids": [
+        "https://openalex.org/I184565670"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Georgetown University, Washington, United States",
+       "institution_ids": [
+        "https://openalex.org/I184565670"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5028863551",
+      "display_name": "Franck Dernoncourt",
+      "orcid": "https://orcid.org/0000-0002-1119-1346",
+      "observed_orcids": [
+       "https://orcid.org/0000-0002-1119-1346"
+      ]
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I184565670",
+       "display_name": "Georgetown University",
+       "ror": "https://ror.org/05vzafd60",
+       "country_code": "US",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I184565670"
+       ]
+      },
+      {
+       "id": "https://openalex.org/I63966007",
+       "display_name": "Massachusetts Institute of Technology",
+       "ror": "https://ror.org/042nb2s44",
+       "country_code": "US",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I63966007"
+       ]
+      }
+     ],
+     "countries": [
+      "US"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Franck Dernoncourt",
+     "raw_affiliation_strings": [
+      "Department of Computer Science , Georgetown University , Washington , DC",
+      "Massachusetts Institute of Technology, Cambridge, United States"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Department of Computer Science , Georgetown University , Washington , DC",
+       "institution_ids": [
+        "https://openalex.org/I184565670"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Massachusetts Institute of Technology, Cambridge, United States",
+       "institution_ids": [
+        "https://openalex.org/I63966007"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5020855689",
+      "display_name": "Doo Soon Kim",
+      "orcid": null,
+      "observed_orcids": []
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1306409833",
+       "display_name": "Adobe Systems (United States)",
+       "ror": "https://ror.org/059tvcg64",
+       "country_code": "US",
+       "type": "company",
+       "lineage": [
+        "https://openalex.org/I1306409833"
+       ]
+      },
+      {
+       "id": "https://openalex.org/I184565670",
+       "display_name": "Georgetown University",
+       "ror": "https://ror.org/05vzafd60",
+       "country_code": "US",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I184565670"
+       ]
+      }
+     ],
+     "countries": [
+      "US"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Doo Soon Kim",
+     "raw_affiliation_strings": [
+      "Department of Computer Science , Georgetown University , Washington , DC",
+      "Adobe Systems (United States), San Jose, United States"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Department of Computer Science , Georgetown University , Washington , DC",
+       "institution_ids": [
+        "https://openalex.org/I184565670"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Adobe Systems (United States), San Jose, United States",
+       "institution_ids": [
+        "https://openalex.org/I1306409833"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5113663962",
+      "display_name": "Trung Bui",
+      "orcid": null,
+      "observed_orcids": []
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1306409833",
+       "display_name": "Adobe Systems (United States)",
+       "ror": "https://ror.org/059tvcg64",
+       "country_code": "US",
+       "type": "company",
+       "lineage": [
+        "https://openalex.org/I1306409833"
+       ]
+      },
+      {
+       "id": "https://openalex.org/I184565670",
+       "display_name": "Georgetown University",
+       "ror": "https://ror.org/05vzafd60",
+       "country_code": "US",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I184565670"
+       ]
+      }
+     ],
+     "countries": [
+      "US"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Trung Bui",
+     "raw_affiliation_strings": [
+      "Department of Computer Science , Georgetown University , Washington , DC",
+      "Adobe Systems (United States), San Jose, United States"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Department of Computer Science , Georgetown University , Washington , DC",
+       "institution_ids": [
+        "https://openalex.org/I184565670"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Adobe Systems (United States), San Jose, United States",
+       "institution_ids": [
+        "https://openalex.org/I1306409833"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5082880112",
+      "display_name": "Seokhwan Kim",
+      "orcid": "https://orcid.org/0000-0002-7443-1212",
+      "observed_orcids": [
+       "https://orcid.org/0000-0002-7443-1212"
+      ]
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1306409833",
+       "display_name": "Adobe Systems (United States)",
+       "ror": "https://ror.org/059tvcg64",
+       "country_code": "US",
+       "type": "company",
+       "lineage": [
+        "https://openalex.org/I1306409833"
+       ]
+      },
+      {
+       "id": "https://openalex.org/I184565670",
+       "display_name": "Georgetown University",
+       "ror": "https://ror.org/05vzafd60",
+       "country_code": "US",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I184565670"
+       ]
+      }
+     ],
+     "countries": [
+      "US"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Seokhwan Kim",
+     "raw_affiliation_strings": [
+      "Department of Computer Science , Georgetown University , Washington , DC",
+      "Adobe Systems (United States), San Jose, United States"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Department of Computer Science , Georgetown University , Washington , DC",
+       "institution_ids": [
+        "https://openalex.org/I184565670"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Adobe Systems (United States), San Jose, United States",
+       "institution_ids": [
+        "https://openalex.org/I1306409833"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5103861221",
+      "display_name": "Walter Hong‐Shong Chang",
+      "orcid": null,
+      "observed_orcids": []
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I1306409833",
+       "display_name": "Adobe Systems (United States)",
+       "ror": "https://ror.org/059tvcg64",
+       "country_code": "US",
+       "type": "company",
+       "lineage": [
+        "https://openalex.org/I1306409833"
+       ]
+      },
+      {
+       "id": "https://openalex.org/I184565670",
+       "display_name": "Georgetown University",
+       "ror": "https://ror.org/05vzafd60",
+       "country_code": "US",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I184565670"
+       ]
+      }
+     ],
+     "countries": [
+      "US"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Walter Chang",
+     "raw_affiliation_strings": [
+      "Adobe Research , San Jose , CA",
+      "Department of Computer Science , Georgetown University , Washington , DC",
+      "Adobe Systems (United States), San Jose, United States"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Adobe Research , San Jose , CA",
+       "institution_ids": [
+        "https://openalex.org/I1306409833"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Department of Computer Science , Georgetown University , Washington , DC",
+       "institution_ids": [
+        "https://openalex.org/I184565670"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Adobe Systems (United States), San Jose, United States",
+       "institution_ids": [
+        "https://openalex.org/I1306409833"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "last",
+     "author": {
+      "id": "https://openalex.org/A5036610566",
+      "display_name": "Nazli Goharian",
+      "orcid": "https://orcid.org/0000-0002-6349-5237",
+      "observed_orcids": [
+       "https://orcid.org/0000-0002-6349-5237"
+      ]
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I184565670",
+       "display_name": "Georgetown University",
+       "ror": "https://ror.org/05vzafd60",
+       "country_code": "US",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I184565670"
+       ]
+      }
+     ],
+     "countries": [
+      "US"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Nazli Goharian",
+     "raw_affiliation_strings": [
+      "Department of Computer Science , Georgetown University , Washington , DC",
+      "Georgetown University, Washington, United States"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Department of Computer Science , Georgetown University , Washington , DC",
+       "institution_ids": [
+        "https://openalex.org/I184565670"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Georgetown University, Washington, United States",
+       "institution_ids": [
+        "https://openalex.org/I184565670"
+       ]
+      }
+     ]
+    }
+   ],
+   "topics": [
+    {
+     "id": "https://openalex.org/T10028",
+     "display_name": "Topic Modeling",
+     "score": 0.7773000001907349,
+     "subfield": {
+      "id": "https://openalex.org/subfields/1702",
+      "display_name": "Artificial Intelligence"
+     },
+     "field": {
+      "id": "https://openalex.org/fields/17",
+      "display_name": "Computer Science"
+     },
+     "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+     }
+    },
+    {
+     "id": "https://openalex.org/T13083",
+     "display_name": "Advanced Text Analysis Techniques",
+     "score": 0.18029999732971191,
+     "subfield": {
+      "id": "https://openalex.org/subfields/1702",
+      "display_name": "Artificial Intelligence"
+     },
+     "field": {
+      "id": "https://openalex.org/fields/17",
+      "display_name": "Computer Science"
+     },
+     "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+     }
+    },
+    {
+     "id": "https://openalex.org/T10181",
+     "display_name": "Natural Language Processing Techniques",
+     "score": 0.011099999770522118,
+     "subfield": {
+      "id": "https://openalex.org/subfields/1702",
+      "display_name": "Artificial Intelligence"
+     },
+     "field": {
+      "id": "https://openalex.org/fields/17",
+      "display_name": "Computer Science"
+     },
+     "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+     }
+    }
+   ],
+   "cited_by_count": 630,
+   "referenced_works": [
+    "https://openalex.org/W1544827683",
+    "https://openalex.org/W1843891098",
+    "https://openalex.org/W1902237438",
+    "https://openalex.org/W2115167129",
+    "https://openalex.org/W2130942839",
+    "https://openalex.org/W2467173223",
+    "https://openalex.org/W2526471240",
+    "https://openalex.org/W2606974598",
+    "https://openalex.org/W2612675303",
+    "https://openalex.org/W2626778328",
+    "https://openalex.org/W2734443755",
+    "https://openalex.org/W2739046565",
+    "https://openalex.org/W2759479827",
+    "https://openalex.org/W2952138241",
+    "https://openalex.org/W2963929190",
+    "https://openalex.org/W2964165364",
+    "https://openalex.org/W2964308564",
+    "https://openalex.org/W3101913037",
+    "https://openalex.org/W3102538306",
+    "https://openalex.org/W3103251639"
+   ],
+   "locations": [
+    {
+     "id": "doi:10.18653/v1/n18-2097",
+     "doi": "https://doi.org/10.18653/v1/n18-2097",
+     "is_oa": true,
+     "landing_page_url": "https://doi.org/10.18653/v1/n18-2097",
+     "pdf_url": "https://www.aclweb.org/anthology/N18-2097.pdf",
+     "source": {
+      "id": "https://openalex.org/S4363608774",
+      "display_name": "Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL-HLT)",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "listed_in": [],
+      "host_organization": null,
+      "host_organization_name": null,
+      "host_organization_lineage": [],
+      "host_organization_lineage_names": [],
+      "type": "conference"
+     },
+     "license": "cc-by",
+     "license_id": "https://openalex.org/licenses/cc-by",
+     "version": "publishedVersion",
+     "is_accepted": true,
+     "is_published": true,
+     "raw_source_name": "Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 2 (Short Papers)",
+     "raw_type": "proceedings-article"
+    },
+    {
+     "id": "pmh:oai:arXiv.org:1804.05685",
+     "doi": null,
+     "is_oa": true,
+     "landing_page_url": "http://arxiv.org/abs/1804.05685",
+     "pdf_url": "https://arxiv.org/pdf/1804.05685",
+     "source": {
+      "id": "https://openalex.org/S4306400194",
+      "display_name": "arXiv (Cornell University)",
+      "issn_l": "2331-8422",
+      "issn": [
+       "2331-8422"
+      ],
+      "is_oa": true,
+      "is_in_doaj": false,
+      "is_core": false,
+      "listed_in": [],
+      "host_organization": "https://openalex.org/I205783295",
+      "host_organization_name": "Cornell University",
+      "host_organization_lineage": [
+       "https://openalex.org/I205783295"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+     },
+     "license": null,
+     "license_id": null,
+     "version": "submittedVersion",
+     "is_accepted": false,
+     "is_published": false,
+     "raw_source_name": null,
+     "raw_type": "text"
+    },
+    {
+     "id": "mag:2798240283",
+     "doi": null,
+     "is_oa": true,
+     "landing_page_url": "http://export.arxiv.org/pdf/1804.05685",
+     "pdf_url": null,
+     "source": {
+      "id": "https://openalex.org/S4306400194",
+      "display_name": "arXiv (Cornell University)",
+      "issn_l": "2331-8422",
+      "issn": [
+       "2331-8422"
+      ],
+      "is_oa": true,
+      "is_in_doaj": false,
+      "is_core": false,
+      "listed_in": [],
+      "host_organization": "https://openalex.org/I205783295",
+      "host_organization_name": "Cornell University",
+      "host_organization_lineage": [
+       "https://openalex.org/I205783295"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+     },
+     "license": null,
+     "license_id": null,
+     "version": "submittedVersion",
+     "is_accepted": false,
+     "is_published": false,
+     "raw_source_name": "arXiv (Cornell University)",
+     "raw_type": null
+    }
+   ],
+   "primary_location": {
+    "id": "doi:10.18653/v1/n18-2097",
+    "doi": "https://doi.org/10.18653/v1/n18-2097",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.18653/v1/n18-2097",
+    "pdf_url": "https://www.aclweb.org/anthology/N18-2097.pdf",
+    "source": {
+     "id": "https://openalex.org/S4363608774",
+     "display_name": "Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL-HLT)",
+     "issn_l": null,
+     "issn": null,
+     "is_oa": false,
+     "is_in_doaj": false,
+     "is_core": false,
+     "listed_in": [],
+     "host_organization": null,
+     "host_organization_name": null,
+     "host_organization_lineage": [],
+     "host_organization_lineage_names": [],
+     "type": "conference"
+    },
+    "license": "cc-by",
+    "license_id": "https://openalex.org/licenses/cc-by",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 2 (Short Papers)",
+    "raw_type": "proceedings-article"
+   },
+   "type": "conference-paper",
+   "abstract_inverted_index": {
+    "Arman": [
+     0
+    ],
+    "Cohan,": [
+     1
+    ],
+    "Franck": [
+     2
+    ],
+    "Dernoncourt,": [
+     3
+    ],
+    "Doo": [
+     4
+    ],
+    "Soon": [
+     5
+    ],
+    "Kim,": [
+     6,
+     10
+    ],
+    "Trung": [
+     7
+    ],
+    "Bui,": [
+     8
+    ],
+    "Seokhwan": [
+     9
+    ],
+    "Walter": [
+     11
+    ],
+    "Chang,": [
+     12
+    ],
+    "Nazli": [
+     13
+    ],
+    "Goharian.": [
+     14
+    ],
+    "Proceedings": [
+     15
+    ],
+    "of": [
+     16,
+     20,
+     25
+    ],
+    "the": [
+     17,
+     21,
+     26
+    ],
+    "2018": [
+     18
+    ],
+    "Conference": [
+     19
+    ],
+    "North": [
+     22
+    ],
+    "American": [
+     23
+    ],
+    "Chapter": [
+     24
+    ],
+    "Association": [
+     27
+    ],
+    "for": [
+     28
+    ],
+    "Computational": [
+     29
+    ],
+    "Linguistics:": [
+     30
+    ],
+    "Human": [
+     31
+    ],
+    "Language": [
+     32
+    ],
+    "Technologies,": [
+     33
+    ],
+    "Volume": [
+     34
+    ],
+    "2": [
+     35
+    ],
+    "(Short": [
+     36
+    ],
+    "Papers).": [
+     37
+    ],
+    "2018.": [
+     38
+    ]
+   },
+   "open_access": {
+    "is_oa": true,
+    "oa_status": "hybrid",
+    "oa_url": "https://www.aclweb.org/anthology/N18-2097.pdf",
+    "any_repository_has_fulltext": true
+   },
+   "best_oa_location": {
+    "id": "doi:10.18653/v1/n18-2097",
+    "doi": "https://doi.org/10.18653/v1/n18-2097",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.18653/v1/n18-2097",
+    "pdf_url": "https://www.aclweb.org/anthology/N18-2097.pdf",
+    "source": {
+     "id": "https://openalex.org/S4363608774",
+     "display_name": "Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL-HLT)",
+     "issn_l": null,
+     "issn": null,
+     "is_oa": false,
+     "is_in_doaj": false,
+     "is_core": false,
+     "listed_in": [],
+     "host_organization": null,
+     "host_organization_name": null,
+     "host_organization_lineage": [],
+     "host_organization_lineage_names": [],
+     "type": "conference"
+    },
+    "license": "cc-by",
+    "license_id": "https://openalex.org/licenses/cc-by",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 2 (Short Papers)",
+    "raw_type": "proceedings-article"
+   },
+   "is_retracted": false
+  }
+ ],
+ "group_by": []
+}

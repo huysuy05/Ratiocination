@@ -1,0 +1,25 @@
+# Runtime data (database, uploads, model cache, logs) - never commit
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# Secrets
+.env
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Web
+node_modules/
+web/dist/
+web/test-results/
+web/playwright-report/
+
+# OS
+.DS_Store

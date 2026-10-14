@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+    <responseDate>2026-10-12T23:57:48Z</responseDate>
+                <request verb="ListRecords" metadataPrefix="arXivRaw" from="2026-10-12" until="2026-10-12" set="cs">http://oaipmh.arxiv.org/oai</request>
+
+
+    <ListRecords>
+<record>
+                <header>
+        <identifier>oai:arXiv.org:2601.00765</identifier>
+        <datestamp>2026-10-12</datestamp>
+            <setSpec>cs:cs:HC</setSpec>
+    </header>
+
+            <metadata>
+                        <arXivRaw xmlns="http://arxiv.org/OAI/arXivRaw/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arxiv.org/OAI/arXivRaw/ https://oaipmh.arxiv.org/OAI/arXivRaw.xsd">
+        <id>2601.00765</id>
+        <submitter>Seth Poulsen</submitter>
+            <version version="v1">
+                <date>Fri, 02 Jan 2026 17:53:54 GMT</date>
+                <size>433kb</size>
+            </version>
+            <version version="v2">
+                <date>Thu, 08 Oct 2026 18:13:48 GMT</date>
+                <size>433kb</size>
+            </version>
+        <title>The Effect of Transparency on Students&#39; Perceptions of AI Graders</title>
+        <authors>Joslyn Orgill, Andra Rice, Max Fowler, Seth Poulsen</authors>
+        <categories>cs.HC</categories>
+            <comments>Accepted to SIGCSE 2027</comments>
+            <license>http://arxiv.org/licenses/nonexclusive-distrib/1.0/</license>
+            <abstract>The development of effective autograders is key for scaling assessment and feedback. While NLP based autograding systems for open-ended response questions have been found to be beneficial for providing immediate feedback, autograders are not always liked, understood, or trusted by students. Our research tested the effect of transparency on students&#39; attitudes towards autograders. Transparent autograders increased students&#39; perceptions of autograder accuracy and willingness to discuss autograders in survey comments, but did not improve other related attitudes -- such as willingness to be graded by them on a test -- relative to the control without transparency. However, this lack of impact may be due to higher measured student trust towards autograders in this study than in prior work in the field. We briefly discuss possible reasons for this trend.</abstract>
+    </arXivRaw>
+
+            </metadata>
+        </record>
+<record>
+                <header>
+        <identifier>oai:arXiv.org:2610.11099</identifier>
+        <datestamp>2026-10-12</datestamp>
+            <setSpec>cs:cs:SD</setSpec>
+            <setSpec>eess:eess:AS</setSpec>
+    </header>
+
+            <metadata>
+                        <arXivRaw xmlns="http://arxiv.org/OAI/arXivRaw/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arxiv.org/OAI/arXivRaw/ https://oaipmh.arxiv.org/OAI/arXivRaw.xsd">
+        <id>2610.11099</id>
+        <submitter>Jinghan Peng</submitter>
+            <version version="v1">
+                <date>Thu, 08 Oct 2026 02:13:07 GMT</date>
+                <size>407kb</size>
+            </version>
+        <title>Cross-Lingual Speaker Verification with Self-Supervised Pre-Trained Models</title>
+        <authors>Jinghan Peng, Yu Zheng, Weiqiang Wang, Jian Liu</authors>
+        <categories>cs.SD eess.AS</categories>
+            <comments>Interspeech2026</comments>
+            <journal-ref>Proc. Interspeech 2026, 6958-6962</journal-ref>
+            <doi>10.21437/Interspeech.2026-1799</doi>
+            <license>http://creativecommons.org/licenses/by-nc-sa/4.0/</license>
+            <abstract>Speaker verification (SV) performance degrades under language mismatch due to the entanglement of speaker identity with language-specific acoustic cues. To address this problem, we leverage large-scale self-supervised pre-trained models (PTMs) to learn language-agnostic speaker representations. We utilize PTMs as robust front-end feature extractors, capitalizing on their rich acoustic and linguistic knowledge acquired from vast, diverse audio data. These generalized features are then used to train a downstream speaker embedding network, effectively disentangling speaker identity from language-specific characteristics. We validate our approach on the TidyVoice2026 benchmark, which benchmarks SV under language mismatch. Our proposed system (team T02) achieves equal error rates (EERs) of 2.21% on tv26_eval-A and 2.99% on tv26_eval-U.</abstract>
+    </arXivRaw>
+
+            </metadata>
+        </record>
+<record>
+                <header>
+        <identifier>oai:arXiv.org:1805.06529</identifier>
+        <datestamp>2026-10-12</datestamp>
+            <setSpec>cs:cs:NI</setSpec>
+    </header>
+
+            <metadata>
+                        <arXivRaw xmlns="http://arxiv.org/OAI/arXivRaw/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arxiv.org/OAI/arXivRaw/ https://oaipmh.arxiv.org/OAI/arXivRaw.xsd">
+        <id>1805.06529</id>
+        <submitter>Marsa Rayani</submitter>
+            <version version="v1">
+                <date>Wed, 16 May 2018 21:08:20 GMT</date>
+                <size>581kb</size>
+            </version>
+        <title>Slicing Virtualized EPC-based 5G Core Network for Content Delivery</title>
+        <authors>Marsa Rayani, Diala Naboulsi, Roch Glitho, Halima Elbiaze</authors>
+        <categories>cs.NI</categories>
+            <doi>10.1109/ISCC.2018.8538758</doi>
+            <license>http://arxiv.org/licenses/nonexclusive-distrib/1.0/</license>
+            <abstract>Traditional Content Delivery Networks (CDNs) built with traditional Internet technology are less and less able to cope with today&#39;s tremendous growth of content. Information Centric Networks (ICN), a proposed future Internet technology, may aid in remedying the situation. Unlike the current Internet, it decouples information from its sources and provides in-network storage. We expect traditional CDN and ICN-based CDN to co-exist in the foreseeable future, especially as it is now known that it might be possible to evolve traditional CDNs to gain the benefits promised by ICN. 5G providers must therefore aim to offer core network slices on which both ICN-based CDNs and traditional CDNs can be built. These slices could of course also be offered to providers of other applications with requirements similar to those of content delivery. This paper tackles the problem of slicing 5G for content delivery over ICN-based CDNs and traditional CDNs. Only virtualized Evolved Packet Core (EPC)-based 5G is considered. The problem is defined as a resource allocation problem which aims at minimizing the cost of slice assignment, while meeting QoS requirements. An Integer linear programming (ILP) formulation is provided and evaluated in a small-scale scenario.</abstract>
+    </arXivRaw>
+
+            </metadata>
+        </record>
+<record>
+                <header>
+        <identifier>oai:arXiv.org:1901.03427</identifier>
+        <datestamp>2026-10-12</datestamp>
+            <setSpec>cs:cs:GR</setSpec>
+    </header>
+
+            <metadata>
+                        <arXivRaw xmlns="http://arxiv.org/OAI/arXivRaw/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arxiv.org/OAI/arXivRaw/ https://oaipmh.arxiv.org/OAI/arXivRaw.xsd">
+        <id>1901.03427</id>
+        <submitter>Kurmanbek Kaiyrbekov</submitter>
+            <version version="v1">
+                <date>Thu, 10 Jan 2019 23:04:46 GMT</date>
+                <size>1941kb</size>
+                    <source_type>D</source_type>
+            </version>
+            <version version="v2">
+                <date>Sat, 19 Jan 2019 07:32:09 GMT</date>
+                <size>1941kb</size>
+                    <source_type>D</source_type>
+            </version>
+        <title>Stroke-based sketched symbol reconstruction and segmentation</title>
+        <authors>Kurmanbek Kaiyrbekov, Metin Sezgin</authors>
+        <categories>cs.GR</categories>
+            <report-no>PMID: 31581077</report-no>
+            <journal-ref>IEEE Computer Graphics and Applications, vol. 40, no. 1, pp. 112-126, 1 Jan.-Feb. 2020</journal-ref>
+            <doi>10.1109/MCG.2019.2943333</doi>
+            <license>http://arxiv.org/licenses/nonexclusive-distrib/1.0/</license>
+            <abstract>Hand-drawn objects usually consist of multiple semantically meaningful parts. For example, a stick figure consists of a head, a torso, and pairs of legs and arms. Efficient and accurate identification of these subparts promises to significantly improve algorithms for stylization, deformation, morphing and animation of 2D drawings. In this paper, we propose a neural network model that segments symbols into stroke-level components. Our segmentation framework has two main elements: a fixed feature extractor and a Multilayer Perceptron (MLP) network that identifies a component based on the feature. As the feature extractor we utilize an encoder of a stroke-rnn, which is our newly proposed generative Variational Auto-Encoder (VAE) model that reconstructs symbols on a stroke by stroke basis. Experiments show that a single encoder could be reused for segmenting multiple categories of sketched symbols with negligible effects on segmentation accuracies. Our segmentation scores surpass existing methodologies on an available small state of the art dataset. Moreover, extensive evaluations on our newly annotated big dataset demonstrate that our framework obtains significantly better accuracies as compared to baseline models. We release the dataset to the community.</abstract>
+    </arXivRaw>
+
+            </metadata>
+        </record>
+
+                    <resumptionToken expirationDate='2026-10-13T00:00:00Z'>verb%3DListRecords%26metadataPrefix%3DarXivRaw%26from%3D2026-10-12%26until%3D2026-10-12%26set%3Dcs%26skip%3D1300</resumptionToken>
+
+    </ListRecords>
+</OAI-PMH>

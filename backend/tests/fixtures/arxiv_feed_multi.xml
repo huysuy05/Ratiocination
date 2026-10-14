@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2005/Atom" xml:lang="en-us">
+  <id>http://rss.arxiv.org/atom/cs.IR+cs.DL+cs.CL</id>
+  <title>cs.IR, cs.DL, cs.CL updates on arXiv.org</title>
+  <updated>2026-10-12T21:02:12.365840+00:00</updated>
+  <link href="http://rss.arxiv.org/atom/cs.IR+cs.DL+cs.CL" rel="self" type="application/atom+xml"/>
+  <subtitle>cs.IR, cs.DL, cs.CL updates on the arXiv.org e-print archive.</subtitle>
+  <entry>
+    <id>oai:arXiv.org:2610.12545v1</id>
+    <title>AutoIndexer: Flexible-Order Decoding by Training Causal Models on Chains of Edits</title>
+    <updated>2026-10-12T21:02:12.365930+00:00</updated>
+    <link href="https://arxiv.org/abs/2610.12545" rel="alternate" type="text/html"/>
+    <summary>arXiv:2610.12545v1 Announce Type: new 
+Abstract: Autoregressive decoding is less suited to non-causally ordered data, e.g., cross-references or future dependencies, since their outputs cannot be revised post hoc, unlike iterative human reasoning. Diffusion LLMs partially mitigate this limitation but still cannot flexibly insert or remove arbitrary numbers of tokens from a pre-generated context. We design AutoIndexer as a generative model with a novel training and decoding mechanism that simulates a Chain of Edits, allowing the model to flexibly modify its prior outputs in hindsight via token insertions, substitutions, and deletions. The model learns to predict marker tokens for opening and closing edits, simultaneously moving a cursor to positions in the existing token sequence, analogous to a text editor. Training sequences are obtained by perturbing ground-truth labels with inverse chained edit operations, and the model learns to edit by undoing those inverses. The perturbation training allows AutoIndexer to be robust to erroneous context and adaptable to editing tasks such as code correction. We demonstrate that our method exhibits post-generation context-editing capabilities that most autoregressive and diffusion models lack without compromising performance on standard LLM benchmarks. The code is available at https://github.com/AutodeskAILab/autoindexer.</summary>
+    <category term="cs.CL"/>
+    <category term="cs.AI"/>
+    <category term="cs.LG"/>
+    <published>2026-10-12T00:00:00-04:00</published>
+    <arxiv:announce_type>new</arxiv:announce_type>
+    <dc:rights>http://arxiv.org/licenses/nonexclusive-distrib/1.0/</dc:rights>
+    <dc:creator>Shu Ishida, Aliasghar Khani, Tianyu Zhang, The Cong Luong, James Seale Smith, Adam Gaier</dc:creator>
+  </entry>
+  <entry>
+    <id>oai:arXiv.org:2610.12569v1</id>
+    <title>SWE-Duel: Towards a Self-Scaling Arena for Coding Agents</title>
+    <updated>2026-10-12T21:02:12.366053+00:00</updated>
+    <link href="https://arxiv.org/abs/2610.12569" rel="alternate" type="text/html"/>
+    <summary>arXiv:2610.12569v1 Announce Type: new 
+Abstract: Static coding benchmarks are fixed at release. Over time their tasks leak into training data, and stronger agents eventually saturate them. We argue that a benchmark should instead aim to be self-scaling: its tasks and oracles are created at evaluation time, so no content exists in advance to leak, and its difficulty is set by the participating agents rather than fixed at release. We introduce SWE-Duel, an arena in which two coding agents evaluate each other over mirrored Red-Blue turns. In each turn, the Red agent works on a real repository across three context-isolated sessions. It proposes and implements a new feature with feature tests, then embeds a subtle bug in that feature along with sealed bug-triggering tests. The resulting pull request is admitted only if (1) it passes the feature tests and the repository's existing tests while failing exactly the bug tests, and (2) a fresh session of the same agent can repair the bug blind, which rules out unsolvable tasks. The Blue agent then reviews the pull request without being told a bug exists. It wins only if its revision passes all three test suites, and then the two agents swap roles. We run a tournament among 11 model-harness participants on 15 repositories in five languages for 1,500 turns. The leaders win in different ways. GPT-5.5 with Codex CLI ranks first as the strongest solver, repairing 98.3% of the defects it reviews. Claude Opus 4.8 with mini-swe-agent ranks second as the strongest task author, with a 27.3% Red win rate. Finally, within one model family, tasks written by the newest version defeat a fixed-reference solver far more often than those of older versions (42.9% vs. 4.0%), giving preliminary evidence that task difficulty scales with task authoring capability.</summary>
+    <category term="cs.CL"/>
+    <category term="cs.SE"/>
+    <published>2026-10-12T00:00:00-04:00</published>
+    <arxiv:announce_type>new</arxiv:announce_type>
+    <dc:rights>http://creativecommons.org/licenses/by/4.0/</dc:rights>
+    <dc:creator>Wei Minn, Zhensu Sun, Lwin Khin Shar, David Lo</dc:creator>
+  </entry>
+  <entry>
+    <id>oai:arXiv.org:2610.12495v1</id>
+    <title>Kairos: Toward a Byte-Level Foundation Model for Every Modality</title>
+    <updated>2026-10-12T21:02:12.371378+00:00</updated>
+    <link href="https://arxiv.org/abs/2610.12495" rel="alternate" type="text/html"/>
+    <summary>arXiv:2610.12495v1 Announce Type: cross 
+Abstract: Small language models trained on a single local machine leave little room for architectural trial and error. Kairos combines bidirectional gated-DeltaNet linear attention and sliding-window attention over shared projections (LiZAttention2), block-wise Attention-Residual aggregation, a sparse Mixture-of-Experts (MoE) feed-forward layer and a multi-scale byte-level codec, trained with a uniform-noise denoising objective over one byte space shared by text, image, audio, video, lidar and control streams; this report asks whether the combination optimizes at all before asking whether it is useful. We give code-derived algorithms for each component, including a cross-session recurrent-state memory gate, then run convergence sanity checks: overfittinga single 440-byte sentence at 1--15M parameters, text only, with three seeds for codec and attention choices and single-run sweeps for seven further factors. The two attention variants tested at 3\,000 steps (LiZAttention2 and window attention alone) reach a minimum loss near $10^{-3}$. After 600 steps, the mean minimum loss ranges from 0.018 (patch codec) to 0.354 (depthwise convolutional codec) with an identical ranking on three seeds. An apparent advantage of shared over separate attention projections closes with more steps or more diverse data and reverses when the projections are frozen: it is a convergence-speed effect, not a capacity effect. These checks suggest that the implementation optimizes; they say nothing about generalization, multimodal training or comparison with existing models, which a planned pretraining run is meant to address. The Discussion sizes a 200M-total/25M-active target analytically; none of its throughput figures is measured. Code is available at https://github.com/fabienfrfr/Kairos . Python package at https://pypi.org/project/kairos-fm/ .</summary>
+    <category term="cs.LG"/>
+    <category term="cs.AI"/>
+    <category term="cs.CL"/>
+    <published>2026-10-12T00:00:00-04:00</published>
+    <arxiv:announce_type>cross</arxiv:announce_type>
+    <dc:rights>http://arxiv.org/licenses/nonexclusive-distrib/1.0/</dc:rights>
+    <dc:creator>Fabien Furfaro</dc:creator>
+  </entry>
+  <entry>
+    <id>oai:arXiv.org:2610.12496v1</id>
+    <title>An Input-Dependent Readout Phase for Resonant Sequence Models</title>
+    <updated>2026-10-12T21:02:12.371437+00:00</updated>
+    <link href="https://arxiv.org/abs/2610.12496" rel="alternate" type="text/html"/>
+    <summary>arXiv:2610.12496v1 Announce Type: cross 
+Abstract: Sequence models with a fixed-size state avoid the quadratic cost of attention, but face a design choice. An input-dependent state transition gives content-dependent memory at the cost of FFT-based training, while a fixed transition keeps the O(T log T) convolutional path but reads memory the same way for every input. ResonatorLM, a recent model of the second kind, reads a bank of damped complex oscillators through a fixed learned phase per head. We make that readout phase a function of the current token, which adds input dependence to the read only, keeps the convolution exact, and costs 0.2 percent more parameters. An analysis of the untrained bank shows that phase does encode elapsed time, but an ordinary token falls below the background within 2-8 steps and no choice of damping extends linear reconstruction beyond about 16 tokens. In 6M-parameter character-level models on WikiText-2, the input-dependent phase matches the original at the training length and removes its failure beyond it: trained on 256 tokens and tested on 1024, perplexity falls from 12.81 to 3.76. We trace the failure to long-memory heads that accumulate more history than training exposed them to. The learned phase tracks the current character rather than distance and does not improve retrieval.</summary>
+    <category term="cs.LG"/>
+    <category term="cs.CL"/>
+    <published>2026-10-12T00:00:00-04:00</published>
+    <arxiv:announce_type>cross</arxiv:announce_type>
+    <dc:rights>http://arxiv.org/licenses/nonexclusive-distrib/1.0/</dc:rights>
+    <dc:creator>Shivesh Rane</dc:creator>
+  </entry>
+  <entry>
+    <id>oai:arXiv.org:2405.01930v3</id>
+    <title>OARelatedWork: A Large-Scale Dataset of Related Work Sections with Full-texts from Open Access Sources</title>
+    <updated>2026-10-12T21:02:12.374169+00:00</updated>
+    <link href="https://arxiv.org/abs/2405.01930" rel="alternate" type="text/html"/>
+    <summary>arXiv:2405.01930v3 Announce Type: replace 
+Abstract: This paper introduces OARelatedWork: a dataset for related work generation from open-access sources. It is the first large-scale multi-document summarization dataset for related work generation, containing whole related work sections and full texts of cited papers. Its validation and test splits are constructed so that every source paper is available in full text, enabling controlled evaluation of full-text related work generation. The dataset includes 94 450 papers from multiple domains. With OARelatedWork, we aim to shift the field from generating parts of related work sections from abstracts only to generating entire related work sections from all available content. We (i) benchmark a wide spectrum of models, highlighting that synthesizing massive full-text contexts remains challenge for tested cost-effective Large Language Models (LLMs): under our statement-level judge, GPT-4o-mini's evidence-grounded True rate drops from 92.9% with abstracts to 83.8% with full texts. We (ii) empirically analyze human writing behavior through a human evaluation over 40 papers and 408 factual statements, revealing that authors frequently introduce abstractive claims ungrounded in localized source texts; consequently, tested LLMs actually surpass human baselines in strict, evidence-grounded factuality. Finally, we (iii) conduct a fine-grained meta-evaluation, revealing that standard reference-based metrics are inadequate for evaluating such long-form structured outputs, and introduce a robust statement-level evaluation framework to address this gap.</summary>
+    <category term="cs.CL"/>
+    <published>2026-10-12T00:00:00-04:00</published>
+    <arxiv:announce_type>replace</arxiv:announce_type>
+    <dc:rights>http://creativecommons.org/licenses/by/4.0/</dc:rights>
+    <dc:creator>Martin Docekal, Martin Fajcik, Pavel Smrz</dc:creator>
+  </entry>
+  <entry>
+    <id>oai:arXiv.org:2412.13844v2</id>
+    <title>CRM: Retrieval Model with Controllable Condition</title>
+    <updated>2026-10-12T21:02:12.374226+00:00</updated>
+    <link href="https://arxiv.org/abs/2412.13844" rel="alternate" type="text/html"/>
+    <summary>arXiv:2412.13844v2 Announce Type: replace 
+Abstract: Retrieval models for recommendation need to account for outcomes such as watch time while searching large item corpora efficiently. We present the Controllable Retrieval Model (CRM), an outcome-conditioned retrieval framework that adds watch time as an input to the user tower. During training, CRM learns to predict the next item given its observed watch time; at inference, we supply a desired watch time to steer retrieval without retraining. The item tower is independent of the condition, so item embeddings can still be precomputed and indexed for approximate nearest neighbor (ANN) search. We implement CRM as both a DNN-based two-tower model and a Decision Transformer. The Transformer interleaves item tokens with watch-time-to-go condition tokens, using the target watch time as a numerical prompt for next-item prediction. For each online request, we choose between the average and maximum watch times in the user's recent history as the condition. CRM is deployed in Kuaishou's short-video recommendation system, which serves over 400 million users. Online A/B tests show video watch time improvements of 0.372% in Kuaishou and 0.457% in Kuaishou Lite.</summary>
+    <category term="cs.IR"/>
+    <category term="cs.AI"/>
+    <published>2026-10-12T00:00:00-04:00</published>
+    <arxiv:announce_type>replace</arxiv:announce_type>
+    <dc:rights>http://creativecommons.org/licenses/by/4.0/</dc:rights>
+    <dc:creator>Chi Liu, Jiangxia Cao, Rui Huang, Kuo Cai, Weifeng Ding, Qiang Luo, Kun Gai, Guorui Zhou</dc:creator>
+  </entry>
+  <entry>
+    <id>oai:arXiv.org:2505.15738v3</id>
+    <title>Auditing Prompt Injection Defenses Before They Reach Users: What Strong Adversaries Reveal</title>
+    <updated>2026-10-12T21:02:12.376585+00:00</updated>
+    <link href="https://arxiv.org/abs/2505.15738" rel="alternate" type="text/html"/>
+    <summary>arXiv:2505.15738v3 Announce Type: replace-cross 
+Abstract: Large language models are increasingly deployed in user-facing products that handle sensitive personal data while interacting with untrusted external content. This makes them a prime target for prompt injection attacks, in which an adversary injects malicious instructions in that content to hijack the model. Fine-tuning-based defenses have been proposed to mitigate these attacks by training models to follow benign user instructions and ignore injected ones. Lacking formal guarantees, these defenses are evaluated empirically against the most effective realistic attacks available at the time, often reporting near-zero attack success rates -- giving developers, and the users who depend on them, a false sense of security and leaving open the possibility that future, more capable attacks could circumvent them and cause severe consequences in widely deployed systems. In this paper, we argue that developers should stress-test their defenses before release, and we introduce an auditing framework that does so without requiring defenders to invent the next state-of-the-art attack. Our key insight is that the fine-tuning process itself yields useful artifacts: intermediate checkpoints that serve as stepping stones for optimization-based attacks. Although these artifacts are unavailable to real attackers, we show that the vulnerabilities they expose are genuine and can be exploited by realistic adversaries. Instantiating our framework with optimization-based attacks such as GCG and BEAST, we raise attack success rates against state-of-the-art defenses from near zero to as high as 96\%, revealing weaknesses missed by prior evaluations. Our results show that current evaluation practices can substantially overestimate robustness, and that auditing defenses under strong adversaries before deployment shortens the feedback loop and helps prevent attacks from causing real-world harm to users.</summary>
+    <category term="cs.CR"/>
+    <category term="cs.AI"/>
+    <category term="cs.CL"/>
+    <category term="cs.LG"/>
+    <published>2026-10-12T00:00:00-04:00</published>
+    <arxiv:announce_type>replace-cross</arxiv:announce_type>
+    <dc:rights>http://arxiv.org/licenses/nonexclusive-distrib/1.0/</dc:rights>
+    <dc:creator>Xiaoxue Yang, Bozhidar Stevanoski, Matthieu Meeus, Yves-Alexandre de Montjoye</dc:creator>
+  </entry>
+</feed>

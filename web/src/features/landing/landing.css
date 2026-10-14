@@ -1,0 +1,187 @@
+/*
+ * Landing page styles that utilities cannot express: the display font, keyframes of the decorative
+ * loops and their pause rules (UI.md §16). Plain CSS (no Tailwind directives), loaded with the
+ * landing chunk. Under <html data-motion="reduced"> globals.css turns every CSS animation off; each
+ * loop's resting style below is its static frame.
+ */
+
+html.lp-page,
+html.lp-page body {
+  background-color: var(--lp-bg);
+}
+
+html.lp-page {
+  scroll-behavior: smooth;
+}
+
+.lp-root {
+  font-family: "Outfit Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-feature-settings: normal;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: var(--lp-bg);
+  color: var(--lp-text);
+}
+
+/* In the base layer so focus-visible:outline-* utilities can recolour it (e.g. on navy cards). */
+@layer base {
+  .lp-root :focus-visible {
+    outline: 2px solid var(--lp-link);
+    outline-offset: 3px;
+  }
+}
+
+/* Uppercase labels: 14 px bold, slightly tracked. */
+.lp-eyebrow {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* Infinite loops pause while their section is off screen (data-offscreen) or hovered/focused. */
+[data-offscreen="true"] .lp-loop,
+[data-paused="true"] .lp-loop {
+  animation-play-state: paused !important;
+}
+
+/* ---- sticker: one clockwise turn per 16 s (the badge shape only) ---- */
+.lp-sticker-spin {
+  animation: lp-spin 16s linear infinite;
+}
+
+@keyframes lp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---- hero portrait: the white frame multiplies into the card tint ---- */
+.lp-portrait {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 120%;
+  max-width: none;
+  height: auto;
+  aspect-ratio: 1080 / 1486;
+  mix-blend-mode: multiply;
+}
+
+/* ---- category marquee: one set (5 tiles + 5 gaps) per loop at ~100 px/s ---- */
+.lp-marquee {
+  --tile: 220px;
+  --gap: 16px;
+  --loop: calc(5 * (var(--tile) + var(--gap)));
+}
+
+@media (min-width: 768px) {
+  .lp-marquee {
+    --tile: 300px;
+    --gap: 20px;
+  }
+}
+
+.lp-marquee-track {
+  display: flex;
+  width: max-content;
+  gap: var(--gap);
+  padding-right: var(--gap);
+  /* Static frame (and starting point): the first tile bleeds off the left edge. */
+  transform: translateX(calc(var(--tile) * -0.42));
+  animation: lp-marquee 11.8s linear infinite;
+}
+
+@media (min-width: 768px) {
+  .lp-marquee-track {
+    animation-duration: 16s;
+  }
+}
+
+.lp-marquee:hover .lp-marquee-track,
+.lp-marquee:focus-within:not([data-paused="false"]) .lp-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes lp-marquee {
+  from {
+    transform: translateX(calc(var(--tile) * -0.42));
+  }
+  to {
+    transform: translateX(calc(var(--tile) * -0.42 - var(--loop)));
+  }
+}
+
+.lp-tile {
+  width: var(--tile);
+  height: var(--tile);
+}
+
+/* ---- statement radar: the sweep turns once per 8 s; blips flare as it passes ---- */
+.lp-sweep {
+  background: conic-gradient(
+    from 0deg,
+    rgba(216, 207, 188, 0) 0deg,
+    rgba(216, 207, 188, 0) 270deg,
+    rgba(216, 207, 188, 0.16) 330deg,
+    rgba(216, 207, 188, 0.5) 359deg,
+    rgba(216, 207, 188, 0) 360deg
+  );
+  border-radius: 9999px;
+  /* Static frame: the beam rests at about 1 o'clock. */
+  transform: rotate(32deg);
+  animation: lp-turn 8s linear infinite;
+}
+
+@keyframes lp-turn {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.lp-blip {
+  opacity: 0.85;
+  animation: lp-blip 8s linear infinite;
+}
+
+@keyframes lp-blip {
+  0% {
+    opacity: 1;
+    transform: scale(1.8);
+  }
+  6% {
+    opacity: 0.95;
+    transform: scale(1.15);
+  }
+  45% {
+    opacity: 0.32;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.22;
+    transform: scale(1);
+  }
+}
+
+/* ---- footer: concentric SVG rings ripple outward (static: the r attributes, evenly spaced) ---- */
+.lp-ripple {
+  animation: lp-ripple 14s linear infinite;
+}
+
+@keyframes lp-ripple {
+  0% {
+    r: 0px;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    r: 760px;
+    opacity: 0.2;
+  }
+}

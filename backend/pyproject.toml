@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ratiocination"
+version = "0.1.0"
+description = "Ratiocination backend: a private, project-aware research discovery service (FastAPI)."
+requires-python = ">=3.13"
+license = { text = "AGPL-3.0-or-later" }
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic>=2.7",
+    "pydantic-settings",
+    "sqlalchemy>=2.0.30",
+    "alembic",
+    "httpx",
+    "numpy",
+    "scikit-learn",
+    "scipy",
+    "pymupdf",
+    "python-multipart",
+    "apscheduler>=3.10,<4",
+    "fastembed",
+    "tzdata",
+    "argon2-cffi",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "hypothesis",
+    "ruff",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["radar", "radar.*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "network: talks to real external services (network is blocked in the default test run)",
+    "slow: slow test",
+]
+filterwarnings = [
+    # Starlette >= 1.x prefers httpx2 for TestClient; httpx is the pinned client here.
+    "ignore:Using `httpx` with `starlette.testclient` is deprecated",
+]
+
+[tool.ruff]
+line-length = 110
+target-version = "py313"
+extend-exclude = ["migrations/versions"]
+
+[tool.ruff.lint]
+# Explicit rule set (ruff >= 0.15 enables a much larger default set): pycodestyle errors, pyflakes,
+# bugbear, blocking calls in async code, and unused noqa comments.
+select = ["E4", "E7", "E9", "F", "B", "ASYNC", "RUF100"]
+# B008: FastAPI's Depends()/Query()/File() defaults are idiomatic.
+ignore = ["B008"]

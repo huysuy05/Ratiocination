@@ -1,0 +1,55 @@
+# Docker build context = repository root. The image needs only web/ (sources, built inside the
+# image), backend/ (without tests) and scripts/. Everything else stays out: secrets, runtime data,
+# local environments, caches, test output and docs.
+
+# VCS, editors, OS
+.git
+.gitignore
+.DS_Store
+**/.DS_Store
+.claude
+.vscode
+.idea
+
+# Secrets: never in the image (Fly secrets are set with `fly secrets set`)
+.env
+.env.*
+**/.env
+**/.env.*
+
+# Runtime data (database, uploads, model cache, logs)
+data/
+**/*.db
+**/*.db-wal
+**/*.db-shm
+
+# Python environments, build output and caches
+.venv
+**/__pycache__
+**/*.pyc
+**/*.egg-info
+**/.pytest_cache
+**/.ruff_cache
+**/.mypy_cache
+backend/build
+backend/tests
+
+# Node modules, builds and test output (the image runs npm ci + npm run build itself)
+**/node_modules
+web/dist
+web/test-results
+web/playwright-report
+web/blob-report
+web/coverage
+web/.vite
+
+# Not used by the image
+brand/
+docs/
+README.md
+fly.toml
+Dockerfile
+.dockerignore
+scratch/
+tmp/
+**/*.log

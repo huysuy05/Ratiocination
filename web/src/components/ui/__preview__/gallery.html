@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-motion="full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Ratiocination · design system preview</title>
+    <script>
+      // Dev-only preview of components/ui (served by `vite` at /src/components/ui/__preview__/gallery.html;
+      // never part of the production build). Same pre-paint theme logic as index.html.
+      (function () {
+        var root = document.documentElement;
+        var theme = "dark";
+        var motion = "full";
+        try {
+          var t = window.localStorage.getItem("rr.theme");
+          if (t === "dark" || t === "light") theme = t;
+          if (t === "system") theme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          var m = window.localStorage.getItem("rr.motion");
+          if (m === "reduced" || m === "full") motion = m;
+        } catch (e) {}
+        root.setAttribute("data-theme", theme);
+        root.setAttribute("data-motion", motion);
+        root.style.colorScheme = theme;
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./gallery.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,311 @@
+{
+ "meta": {
+  "count": 5,
+  "db_response_time_ms": 7,
+  "page": 1,
+  "per_page": 5,
+  "groups_count": null,
+  "x_query": {
+   "oql": "get authors where openalex id is (\n    A5000339878\n    or A5043450042\n    or A5064858748\n    or A5085011940\n    or A5090038537\n  )",
+   "oqo": {
+    "get_rows": "authors",
+    "filter_rows": [
+     {
+      "join": "or",
+      "filters": [
+       {
+        "column_id": "ids.openalex",
+        "value": "A5000339878"
+       },
+       {
+        "column_id": "ids.openalex",
+        "value": "A5043450042"
+       },
+       {
+        "column_id": "ids.openalex",
+        "value": "A5064858748"
+       },
+       {
+        "column_id": "ids.openalex",
+        "value": "A5085011940"
+       },
+       {
+        "column_id": "ids.openalex",
+        "value": "A5090038537"
+       }
+      ]
+     }
+    ]
+   },
+   "url": "/authors?filter=ids.openalex:A5000339878|A5043450042|A5064858748|A5085011940|A5090038537&per_page=5"
+  },
+  "cost_usd": 0.0001
+ },
+ "results": [
+  {
+   "id": "https://openalex.org/A5085011940",
+   "display_name": "Daniel S. Weld",
+   "orcid": "https://orcid.org/0000-0002-3255-0109",
+   "works_count": 351,
+   "cited_by_count": 34336,
+   "summary_stats": {
+    "2yr_mean_citedness": 4.5,
+    "h_index": 86,
+    "i10_index": 223
+   },
+   "last_known_institutions": [
+    {
+     "id": "https://openalex.org/I201448701",
+     "ror": "https://ror.org/00cvxb145",
+     "display_name": "University of Washington",
+     "country_code": "US",
+     "type": "education",
+     "lineage": [
+      "https://openalex.org/I201448701"
+     ]
+    },
+    {
+     "id": "https://openalex.org/I4210104555",
+     "ror": "https://ror.org/0154kn471",
+     "display_name": "Allen Institute for Immunology",
+     "country_code": "US",
+     "type": "facility",
+     "lineage": [
+      "https://openalex.org/I4210104555",
+      "https://openalex.org/I4210140341"
+     ]
+    },
+    {
+     "id": "https://openalex.org/I4210140341",
+     "ror": "https://ror.org/03cpe7c52",
+     "display_name": "Allen Institute",
+     "country_code": "US",
+     "type": "nonprofit",
+     "lineage": [
+      "https://openalex.org/I4210140341"
+     ]
+    },
+    {
+     "id": "https://openalex.org/I4210156221",
+     "ror": "https://ror.org/05w520734",
+     "display_name": "Allen Institute for Artificial Intelligence",
+     "country_code": "US",
+     "type": "nonprofit",
+     "lineage": [
+      "https://openalex.org/I4210156221"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "https://openalex.org/A5064858748",
+   "display_name": "Arman Cohan",
+   "orcid": "https://orcid.org/0000-0002-8954-2724",
+   "works_count": 289,
+   "cited_by_count": 10581,
+   "summary_stats": {
+    "2yr_mean_citedness": 4.305882352941176,
+    "h_index": 34,
+    "i10_index": 77
+   },
+   "last_known_institutions": [
+    {
+     "id": "https://openalex.org/I114027177",
+     "ror": "https://ror.org/0130frc33",
+     "display_name": "University of North Carolina at Chapel Hill",
+     "country_code": "US",
+     "type": "education",
+     "lineage": [
+      "https://openalex.org/I114027177"
+     ]
+    },
+    {
+     "id": "https://openalex.org/I165932596",
+     "ror": "https://ror.org/01tgyzw49",
+     "display_name": "National University of Singapore",
+     "country_code": "SG",
+     "type": "education",
+     "lineage": [
+      "https://openalex.org/I165932596"
+     ]
+    },
+    {
+     "id": "https://openalex.org/I258800397",
+     "ror": "https://ror.org/02vpsdb40",
+     "display_name": "New York University Shanghai",
+     "country_code": "CN",
+     "type": "education",
+     "lineage": [
+      "https://openalex.org/I258800397",
+      "https://openalex.org/I57206974"
+     ]
+    },
+    {
+     "id": "https://openalex.org/I32971472",
+     "ror": "https://ror.org/03v76x132",
+     "display_name": "Yale University",
+     "country_code": "US",
+     "type": "education",
+     "lineage": [
+      "https://openalex.org/I32971472"
+     ]
+    },
+    {
+     "id": "https://openalex.org/I35440088",
+     "ror": "https://ror.org/05a28rw58",
+     "display_name": "ETH Zurich",
+     "country_code": "CH",
+     "type": "education",
+     "lineage": [
+      "https://openalex.org/I2799323385",
+      "https://openalex.org/I35440088"
+     ]
+    },
+    {
+     "id": "https://openalex.org/I40347166",
+     "ror": "https://ror.org/024mw5h28",
+     "display_name": "University of Chicago",
+     "country_code": "US",
+     "type": "education",
+     "lineage": [
+      "https://openalex.org/I40347166"
+     ]
+    },
+    {
+     "id": "https://openalex.org/I4210140341",
+     "ror": "https://ror.org/03cpe7c52",
+     "display_name": "Allen Institute",
+     "country_code": "US",
+     "type": "nonprofit",
+     "lineage": [
+      "https://openalex.org/I4210140341"
+     ]
+    },
+    {
+     "id": "https://openalex.org/I57206974",
+     "ror": "https://ror.org/0190ak572",
+     "display_name": "New York University",
+     "country_code": "US",
+     "type": "education",
+     "lineage": [
+      "https://openalex.org/I57206974"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "https://openalex.org/A5043450042",
+   "display_name": "Doug Downey",
+   "orcid": "https://orcid.org/0000-0002-4737-8444",
+   "works_count": 147,
+   "cited_by_count": 7705,
+   "summary_stats": {
+    "2yr_mean_citedness": 3.8636363636363638,
+    "h_index": 33,
+    "i10_index": 60
+   },
+   "last_known_institutions": [
+    {
+     "id": "https://openalex.org/I4210104555",
+     "ror": "https://ror.org/0154kn471",
+     "display_name": "Allen Institute for Immunology",
+     "country_code": "US",
+     "type": "facility",
+     "lineage": [
+      "https://openalex.org/I4210104555",
+      "https://openalex.org/I4210140341"
+     ]
+    },
+    {
+     "id": "https://openalex.org/I4210140341",
+     "ror": "https://ror.org/03cpe7c52",
+     "display_name": "Allen Institute",
+     "country_code": "US",
+     "type": "nonprofit",
+     "lineage": [
+      "https://openalex.org/I4210140341"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "https://openalex.org/A5090038537",
+   "display_name": "Iz Beltagy",
+   "orcid": null,
+   "works_count": 68,
+   "cited_by_count": 10754,
+   "summary_stats": {
+    "2yr_mean_citedness": 17.5,
+    "h_index": 26,
+    "i10_index": 36
+   },
+   "last_known_institutions": [
+    {
+     "id": "https://openalex.org/I157725225",
+     "ror": "https://ror.org/047426m28",
+     "display_name": "University of Illinois Urbana-Champaign",
+     "country_code": "US",
+     "type": "education",
+     "lineage": [
+      "https://openalex.org/I157725225"
+     ]
+    },
+    {
+     "id": "https://openalex.org/I201448701",
+     "ror": "https://ror.org/00cvxb145",
+     "display_name": "University of Washington",
+     "country_code": "US",
+     "type": "education",
+     "lineage": [
+      "https://openalex.org/I201448701"
+     ]
+    },
+    {
+     "id": "https://openalex.org/I32971472",
+     "ror": "https://ror.org/03v76x132",
+     "display_name": "Yale University",
+     "country_code": "US",
+     "type": "education",
+     "lineage": [
+      "https://openalex.org/I32971472"
+     ]
+    },
+    {
+     "id": "https://openalex.org/I4210156221",
+     "ror": "https://ror.org/05w520734",
+     "display_name": "Allen Institute for Artificial Intelligence",
+     "country_code": "US",
+     "type": "nonprofit",
+     "lineage": [
+      "https://openalex.org/I4210156221"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "https://openalex.org/A5000339878",
+   "display_name": "Sergey Feldman",
+   "orcid": "https://orcid.org/0000-0003-0386-0922",
+   "works_count": 51,
+   "cited_by_count": 1659,
+   "summary_stats": {
+    "2yr_mean_citedness": 3.5555555555555554,
+    "h_index": 13,
+    "i10_index": 17
+   },
+   "last_known_institutions": [
+    {
+     "id": "https://openalex.org/I4210156221",
+     "ror": "https://ror.org/05w520734",
+     "display_name": "Allen Institute for Artificial Intelligence",
+     "country_code": "US",
+     "type": "nonprofit",
+     "lineage": [
+      "https://openalex.org/I4210156221"
+     ]
+    }
+   ]
+  }
+ ],
+ "group_by": []
+}

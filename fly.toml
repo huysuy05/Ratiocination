@@ -1,0 +1,73 @@
+# Fly.io configuration for Ratiocination. Runbook: docs/DEPLOY.md. Container contract: docs/SPEC.md
+# "Deployment". Secrets (OAuth, SMTP, API keys, RADAR_ADMIN_EMAILS) never go in this file: use
+# `fly secrets set` (docs/DEPLOY.md lists them).
+#
+# Exactly ONE machine: SQLite on a volume, an in-process job runner and the daily scheduler. Never
+# `fly scale count` above 1 (a second machine would get its own empty database and run jobs twice).
+
+app = "ratiocination"          # app names are global on Fly: if taken, change it and RADAR_PUBLIC_URL below
+primary_region = "ord"         # Chicago
+kill_signal = "SIGTERM"
+kill_timeout = 30              # seconds for a graceful stop (scheduler, job runner, pending DB writes)
+swap_size_mb = 512             # safety margin for memory spikes (embedding batches, PDF extraction)
+
+[build]
+  dockerfile = "Dockerfile"
+
+[deploy]
+  # One machine with a volume: it is replaced in place (a short downtime on each deploy). Migrations run
+  # at startup (radar.db.init_db); no release_command, because release machines have no volume.
+  strategy = "rolling"
+
+[env]
+  RADAR_AUTH = "accounts"
+  RADAR_HOST = "0.0.0.0"
+  RADAR_PORT = "8080"
+  RADAR_BEHIND_TLS_PROXY = "1"                  # Fly's proxy terminates TLS
+  RADAR_PUBLIC_URL = "https://ratiocination.fly.dev"   # your custom domain later (docs/DEPLOY.md)
+  RADAR_CLIENT_IP_HEADER = "Fly-Client-IP"      # real client IP for the per-IP sign-in throttle
+  FORWARDED_ALLOW_IPS = "*"                     # uvicorn: trust X-Forwarded-Proto (only Fly's proxy reaches the port)
+  RADAR_DATA_DIR = "/data"
+  RADAR_SCHEDULER = "1"                         # initial state; the admin switch in Settings wins afterwards
+  RADAR_TIMEZONE = "America/Chicago"
+
+[mounts]
+  source = "radar_data"
+  destination = "/data"
+  initial_size = "3gb"                          # only used if `fly deploy` has to create the volume
+  snapshot_retention = 14                       # days of daily volume snapshots
+  auto_extend_size_threshold = 80               # grow the volume when 80 % full ...
+  auto_extend_size_increment = "1GB"
+  auto_extend_size_limit = "10GB"               # ... up to 10 GB
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "off"                    # the scheduler and job runner live in this process
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 80
+    hard_limit = 100
+
+  [[http_service.checks]]
+    # GET /api/health needs no session and does not touch the database. The first call after a start
+    # loads the embedding model once it is downloaded (a few seconds), hence the generous timeout.
+    grace_period = "30s"
+    interval = "30s"
+    timeout = "15s"
+    method = "GET"
+    path = "/api/health"
+
+    [http_service.checks.headers]
+      # Fly's checker would send the machine's private IP as Host, which the app's TrustedHost guard
+      # rejects (400). localhost is always trusted, and keeps working after a domain or app rename.
+      Host = "localhost"
+
+[[vm]]
+  # Measured (docs/DEPLOY.md "Sizing"): ~0.15 GB idle, ~0.4 GB with the embedding model, ~1.0-1.55 GB
+  # after embedding a full deck. 1 GB is not enough; 2 GB is the largest shared-cpu-1x size.
+  size = "shared-cpu-1x"
+  memory = "2gb"

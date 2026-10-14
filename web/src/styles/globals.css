@@ -1,0 +1,575 @@
+/*
+ * Ratiocination global styles (UI.md §2–3, §11). FROZEN after the foundation phase.
+ *
+ * Utilities map onto the theme tokens in ./tokens.css:
+ *   colours   bg-bg, bg-surface, bg-surface-2, bg-surface-3, border-border, border-border-strong,
+ *             text-text, text-muted, text-faint, bg-accent, text-on-accent, bg-accent-hover,
+ *             text-relevant/not-relevant/save/read, text-edge-*, text-disruptive, bg-feat-*, bg-overlay
+ *             (all accept opacity modifiers: bg-accent/15)
+ *   shape     rounded-card (20) · rounded-panel (16) · rounded-button (12) · rounded-control (10) ·
+ *             rounded-pill
+ *   depth     elevation-card · elevation-raised · elevation-popover · elevation-overlay ·
+ *             inner-highlight · surface-sheen · glass
+ *   type      font-sans (Inter) · font-serif (Source Serif 4) · font-mono · paper-title ·
+ *             paper-abstract · text-eyebrow · tabular-nums
+ *   motion    animate-sweep · animate-shimmer · animate-indeterminate · animate-glow-once ·
+ *             animate-radar-pulse · ease-smooth · ease-sheet; variants full-motion: / reduced-motion:
+ *             follow the app's motion preference (<html data-motion>), not the OS media query
+ *   decor     radar-rings (concentric rings, CSS only) · app-backdrop (page glow) · touch-target
+ */
+@import "tailwindcss";
+/* Self-hosted variable fonts (UI.md §1: no Google Fonts). The optical-size builds switch Inter to
+   its display cut and Source Serif 4 to its display cut automatically at large sizes. They reuse
+   the family names of the weight-only faces main.tsx imports and win because they come later. */
+@import "@fontsource-variable/inter/opsz.css";
+@import "@fontsource-variable/source-serif-4/opsz.css";
+@import "@fontsource-variable/source-serif-4/opsz-italic.css";
+@import "./tokens.css";
+
+@custom-variant full-motion (&:where([data-motion=full], [data-motion=full] *));
+@custom-variant reduced-motion (&:where([data-motion=reduced], [data-motion=reduced] *));
+
+@theme inline {
+  /* ---- colours ---- */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-muted: var(--text-muted);
+  --color-faint: var(--text-faint);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-on-accent: var(--on-accent);
+  --color-accent-glow: var(--accent-glow);
+  --color-relevant: var(--relevant);
+  --color-not-relevant: var(--not-relevant);
+  --color-save: var(--save);
+  --color-read: var(--read);
+  --color-edge-cites: var(--edge-cites);
+  --color-edge-similar: var(--edge-similar);
+  --color-edge-topic: var(--edge-topic);
+  --color-edge-authored: var(--edge-authored);
+  --color-disruptive: var(--disruptive);
+  --color-consolidating: var(--consolidating);
+  --color-feat-question: var(--feat-question);
+  --color-feat-anchor: var(--feat-anchor);
+  --color-feat-keyword: var(--feat-keyword);
+  --color-feat-draft: var(--feat-draft);
+  --color-feat-citation: var(--feat-citation);
+  --color-feat-preference: var(--feat-preference);
+  --color-feat-recency: var(--feat-recency);
+  --color-overlay: var(--overlay);
+
+  /* ---- type ---- */
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Source Serif 4 Variable", ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* ---- shape ---- */
+  --radius-card: var(--card-radius);
+  --radius-panel: var(--panel-radius);
+  --radius-button: var(--button-radius);
+  --radius-control: var(--control-radius);
+  --radius-pill: var(--pill-radius);
+
+  /* ---- motion ---- */
+  --ease-smooth: var(--motion-ease);
+  --ease-sheet: var(--motion-ease-sheet);
+  --animate-sweep: rr-sweep var(--motion-sweep) linear infinite;
+  --animate-shimmer: rr-shimmer 1.8s ease-in-out infinite;
+  --animate-indeterminate: rr-indeterminate 1.5s var(--motion-ease) infinite;
+  --animate-glow-once: rr-glow-once 1.6s var(--motion-ease) 1 both;
+  --animate-radar-pulse: rr-radar-pulse 1.8s var(--motion-ease) 1 both;
+  --animate-fade-in: rr-fade-in var(--motion-base) var(--motion-ease) both;
+  --animate-fade-out: rr-fade-out var(--motion-fast) var(--motion-ease-in) both;
+  --animate-pop-in: rr-pop-in var(--motion-slow) var(--motion-ease) both;
+  --animate-pop-out: rr-pop-out var(--motion-fast) var(--motion-ease-in) both;
+  --animate-float-in: rr-float-in var(--motion-fast) var(--motion-ease) both;
+  --animate-float-out: rr-float-out 120ms var(--motion-ease-in) both;
+  --animate-sheet-in-right: rr-sheet-in-right var(--motion-sheet) var(--motion-ease-sheet) both;
+  --animate-sheet-out-right: rr-sheet-out-right var(--motion-slow) var(--motion-ease-in) both;
+  --animate-sheet-in-left: rr-sheet-in-left var(--motion-sheet) var(--motion-ease-sheet) both;
+  --animate-sheet-out-left: rr-sheet-out-left var(--motion-slow) var(--motion-ease-in) both;
+  --animate-sheet-in-bottom: rr-sheet-in-bottom var(--motion-sheet) var(--motion-ease-sheet) both;
+  --animate-sheet-out-bottom: rr-sheet-out-bottom var(--motion-slow) var(--motion-ease-in) both;
+
+  /* Default transitions (transition-colors, transition, …). */
+  --default-transition-duration: var(--motion-fast);
+  --default-transition-timing-function: var(--motion-ease);
+}
+
+/* ------------------------------------------------------------------------------------------------
+ * Base
+ * --------------------------------------------------------------------------------------------- */
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    background-color: var(--bg);
+  }
+
+  html[data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.5;
+    /* Inter: open 4/6/9 for calmer numbers. */
+    font-feature-settings: "cv02", "cv03", "cv04";
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--font-mono);
+  }
+
+  /* Tailwind v4 resets buttons to cursor: default; this app uses the pointer for actions. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary {
+    cursor: pointer;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-faint);
+    opacity: 1;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--accent) 30%, transparent);
+    color: var(--text);
+  }
+
+  /* Visible focus (UI.md §11): accent, 2 px, 2 px offset. Outlines follow border-radius. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* Programmatic focus targets (skip-link target, deck cards) never show a ring for mouse users. */
+  [tabindex="-1"]:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Thin, theme-aware scrollbars. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklab, var(--text-faint) 42%, transparent) transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 9999px;
+    background-clip: content-box;
+    background-color: color-mix(in oklab, var(--text-faint) 42%, transparent);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in oklab, var(--text-faint) 65%, transparent);
+  }
+}
+
+/* ------------------------------------------------------------------------------------------------
+ * Reduced motion (UI.md §3): <html data-motion="reduced"> (explicit choice or OS setting via
+ * lib/motion.ts). No CSS animations, no movement transitions; colour/opacity fades stay.
+ * --------------------------------------------------------------------------------------------- */
+[data-motion="reduced"],
+[data-motion="reduced"] *,
+[data-motion="reduced"] *::before,
+[data-motion="reduced"] *::after {
+  animation: none !important;
+  scroll-behavior: auto !important;
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill,
+    stroke, opacity, box-shadow !important;
+}
+
+/* Theme switches cross-fade through the View Transitions API when available (AppShell). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 260ms;
+  animation-timing-function: var(--motion-ease);
+}
+
+/* ------------------------------------------------------------------------------------------------
+ * Custom utilities
+ * --------------------------------------------------------------------------------------------- */
+@utility elevation-card {
+  box-shadow: var(--elevation-card);
+}
+
+@utility elevation-raised {
+  box-shadow: var(--elevation-raised);
+}
+
+@utility elevation-popover {
+  box-shadow: var(--elevation-popover);
+}
+
+@utility elevation-overlay {
+  box-shadow: var(--elevation-overlay);
+}
+
+@utility inner-highlight {
+  box-shadow: var(--inner-highlight);
+}
+
+/* Faint top-down sheen on dark surfaces (no-op in light). */
+@utility surface-sheen {
+  background-image: linear-gradient(180deg, var(--sheen, transparent), transparent 46%);
+}
+
+/* Translucent chrome (top bar, bottom tabs). */
+@utility glass {
+  background-color: color-mix(in oklab, var(--surface) 76%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  backdrop-filter: blur(18px) saturate(1.5);
+}
+
+/* Paper titles (UI.md §2: Source Serif 4, 20–26 px on cards, 28–32 px in detail). */
+@utility paper-title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+/* Abstracts (UI.md §2: 16–17 px, line-height 1.6, max 68ch). */
+@utility paper-abstract {
+  font-family: var(--font-serif);
+  font-size: 16.5px;
+  line-height: 1.6;
+  max-width: 68ch;
+  text-wrap: pretty;
+}
+
+/* Small caps section labels ("PROJECT", "WORKSPACE"). */
+@utility text-eyebrow {
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/*
+ * Expands the pointer target of a small control to at least 44 × 44 px without changing its look
+ * (UI.md §4). The element must be positioned (add `relative` unless it already is).
+ */
+@utility touch-target {
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+}
+
+/*
+ * Radar scope backdrop (UI.md §2): faint concentric rings + crosshair + soft glow, CSS only. Put
+ * it on an absolutely positioned, aria-hidden layer behind content. Tune with --ring-gap,
+ * --ring-color and --ring-glow.
+ */
+@utility radar-rings {
+  background-image:
+    radial-gradient(
+      closest-side,
+      color-mix(in oklab, var(--accent) var(--ring-glow, 10%), transparent),
+      transparent 72%
+    ),
+    repeating-radial-gradient(
+      circle at center,
+      transparent 0 calc(var(--ring-gap, 72px) - 1px),
+      var(--ring-color, var(--border)) calc(var(--ring-gap, 72px) - 1px) var(--ring-gap, 72px)
+    ),
+    linear-gradient(to right, transparent calc(50% - 0.5px), var(--ring-color, var(--border)) 50%, transparent calc(50% + 0.5px)),
+    linear-gradient(to bottom, transparent calc(50% - 0.5px), var(--ring-color, var(--border)) 50%, transparent calc(50% + 0.5px));
+  -webkit-mask-image: radial-gradient(closest-side, #000 30%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 30%, transparent 100%);
+}
+
+/* Page backdrop: a subtle radial glow behind the app chrome (UI.md §2). */
+@utility app-backdrop {
+  background-image:
+    radial-gradient(
+      1000px 560px at 78% -14%,
+      color-mix(in oklab, var(--accent) var(--backdrop-glow, 8%), transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      760px 520px at -6% -10%,
+      color-mix(in oklab, var(--edge-cites) var(--backdrop-glow-2, 4%), transparent),
+      transparent 70%
+    );
+}
+
+/* ------------------------------------------------------------------------------------------------
+ * Keyframes (referenced by the animate-* utilities above and by components)
+ * --------------------------------------------------------------------------------------------- */
+@keyframes rr-sweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rr-shimmer {
+  0% {
+    background-position: 120% 0;
+  }
+  100% {
+    background-position: -120% 0;
+  }
+}
+
+@keyframes rr-indeterminate {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(260%);
+  }
+}
+
+@keyframes rr-glow-once {
+  0% {
+    box-shadow: 0 0 0 0 var(--accent-glow);
+  }
+  35% {
+    box-shadow: 0 0 0 6px var(--accent-glow);
+  }
+  100% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+}
+
+@keyframes rr-radar-pulse {
+  0% {
+    transform: scale(0.55);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@keyframes rr-blip {
+  0% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+  14% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  72%,
+  100% {
+    opacity: 0.22;
+    transform: scale(0.85);
+  }
+}
+
+@keyframes rr-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rr-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes rr-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes rr-pop-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98);
+  }
+}
+
+@keyframes rr-float-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes rr-float-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+@keyframes rr-sheet-in-right {
+  from {
+    transform: translateX(calc(100% + 24px));
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes rr-sheet-out-right {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateX(calc(100% + 24px));
+  }
+}
+
+@keyframes rr-sheet-in-left {
+  from {
+    transform: translateX(calc(-100% - 24px));
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes rr-sheet-out-left {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateX(calc(-100% - 24px));
+  }
+}
+
+@keyframes rr-sheet-in-bottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes rr-sheet-out-bottom {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes rr-route-progress {
+  0% {
+    transform: scaleX(0);
+  }
+  50% {
+    transform: scaleX(0.6);
+  }
+  100% {
+    transform: scaleX(0.9);
+  }
+}
+
+/* ------------------------------------------------------------------------------------------------
+ * Toasts (sonner; main.tsx passes className "rr-toast"). Higher specificity than sonner's own
+ * injected theme rules.
+ * --------------------------------------------------------------------------------------------- */
+html [data-sonner-toaster][data-sonner-theme] {
+  --normal-bg: var(--surface);
+  --normal-bg-hover: var(--surface-2);
+  --normal-border: var(--border-strong);
+  --normal-border-hover: var(--border-strong);
+  --normal-text: var(--text);
+  --border-radius: 14px;
+  font-family: var(--font-sans);
+}
+
+html [data-sonner-toaster] [data-sonner-toast].rr-toast {
+  box-shadow: var(--elevation-popover);
+  font-size: 14px;
+}
+
+html [data-sonner-toaster] [data-sonner-toast].rr-toast [data-description] {
+  color: var(--text-muted);
+}
+
+html [data-sonner-toaster] [data-sonner-toast].rr-toast [data-button] {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+html [data-sonner-toaster] [data-sonner-toast].rr-toast [data-close-button] {
+  background: var(--surface);
+  border-color: var(--border-strong);
+  color: var(--text-muted);
+}

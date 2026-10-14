@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-motion="full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="description" content="Ratiocination: a private, project-aware daily deck of new papers." />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <title>Ratiocination</title>
+    <script>
+      // Pre-paint: apply the stored theme (rr.theme, default dark) and motion preference (rr.motion)
+      // before first paint. Mirrors src/lib/theme.ts and src/lib/motion.ts.
+      (function () {
+        var root = document.documentElement;
+        var theme = "dark";
+        var motion = "system";
+        try {
+          var storedTheme = window.localStorage.getItem("rr.theme");
+          if (storedTheme === "dark" || storedTheme === "light" || storedTheme === "system") theme = storedTheme;
+          var storedMotion = window.localStorage.getItem("rr.motion");
+          if (storedMotion === "reduced" || storedMotion === "full" || storedMotion === "system") motion = storedMotion;
+        } catch (e) {}
+        var resolved = theme;
+        if (theme === "system") {
+          try {
+            resolved = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          } catch (e) {
+            resolved = "dark";
+          }
+        }
+        var reduced = motion === "reduced";
+        if (motion === "system") {
+          try {
+            reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          } catch (e) {
+            reduced = false;
+          }
+        }
+        root.setAttribute("data-theme", resolved);
+        root.setAttribute("data-motion", reduced ? "reduced" : "full");
+        root.style.colorScheme = resolved;
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Ratiocination needs JavaScript enabled.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

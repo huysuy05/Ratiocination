@@ -1,0 +1,254 @@
+/*
+ * Ratiocination theme tokens (UI.md §2).
+ *
+ * - Light values live on :root, dark values on [data-theme="dark"] only (the pre-paint script in
+ *   index.html and lib/theme.ts set <html data-theme>).
+ * - Colour tokens are plain CSS variables so non-Tailwind consumers (Cytoscape styles, inline SVG,
+ *   style props) can read them; globals.css maps them onto Tailwind utilities (bg-surface,
+ *   text-muted, border-border, bg-feat-seed, rounded-card, elevation-card, …).
+ * - Contrast is enforced by src/styles/contrast.node.test.ts: every text token ≥ 4.5:1 and every
+ *   state/edge/feature/disruption colour ≥ 3:1 on --bg, --surface, --surface-2 and --surface-3 in
+ *   both themes.
+ * - Non-colour tokens (radii, durations, easings) are theme-invariant and live on :root only.
+ */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+:root {
+  /* ---- surfaces & text (UI.md §2 table, light column) ---- */
+  --bg: #fffbf4;
+  --surface: #fffefa;
+  --surface-2: #f5f0e6;
+  --surface-3: #ede7db;
+  --border: rgba(17, 18, 13, 0.12);
+  --border-strong: rgba(17, 18, 13, 0.22);
+  --text: #11120d;
+  --text-muted: #565449;
+  --text-faint: #67655a;
+
+  /* ---- brand ---- */
+  --accent: #565449;
+  --on-accent: #fffbf4;
+  --accent-glow: rgba(86, 84, 73, 0.2);
+  /* Primary-button hover (keeps ≥ 4.5:1 with --on-accent). */
+  --accent-hover: #3f3e35;
+
+  /* ---- paper states (lib/states.ts STATE_META) ---- */
+  --relevant: #4f6b2f;
+  --not-relevant: #a3402f;
+  --save: #8a6416;
+  --read: #67655a;
+
+  /* ---- graph edges ---- */
+  --edge-cites: #3f5568;
+  --edge-similar: #7a4e73;
+  --edge-topic: #3f6b5e;
+  --edge-authored: #9a5530;
+
+  /* ---- disruption labels (always shown with a text label) ---- */
+  --disruptive: #8e3b5c;
+  --consolidating: #3f5f7a;
+
+  /*
+   * ---- score-breakdown features (stacked in this order) ----
+   * Seven hue families (teal, violet, brick red, orange, blue, yellow, green), the same families in
+   * both themes, ordered so neighbouring segments stay apart under protan/deutan simulation and
+   * normal vision (keyword sits between anchor and draft: next to the teal question it would merge
+   * for protanopes), and ≥ 3:1 on every surface.
+   */
+  --feat-question: #2f6b62;
+  --feat-anchor: #6a4c7a;
+  --feat-keyword: #a3434f;
+  --feat-draft: #b05a2a;
+  --feat-citation: #3e5c80;
+  --feat-preference: #8a6416;
+  --feat-recency: #4f6b2f;
+
+  /* ---- overlays & elevation ---- */
+  --overlay: rgba(17, 18, 13, 0.32);
+  --inner-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+  --elevation-card: 0 1px 2px rgba(17, 18, 13, 0.04), 0 12px 32px -18px rgba(17, 18, 13, 0.22),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+  --elevation-raised: 0 2px 4px rgba(17, 18, 13, 0.05), 0 22px 44px -20px rgba(17, 18, 13, 0.3),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+  --elevation-overlay: 0 24px 64px -20px rgba(17, 18, 13, 0.35), 0 2px 8px rgba(17, 18, 13, 0.06);
+  --elevation-popover: 0 16px 40px -12px rgba(17, 18, 13, 0.25), 0 2px 6px rgba(17, 18, 13, 0.06);
+
+  /* ---- decorative (globals.css surface-sheen / app-backdrop) ---- */
+  --sheen: rgba(255, 255, 255, 0);
+  --backdrop-glow: 5%;
+  --backdrop-glow-2: 3%;
+
+  /* ---- shape (UI.md §2: cards 20, panels 16, buttons 12, chips pill) ---- */
+  --card-radius: 20px;
+  --panel-radius: 16px;
+  --button-radius: 12px;
+  --control-radius: 10px;
+  --pill-radius: 9999px;
+
+  /* ---- motion (UI.md §3: UI fades 150–220 ms; radar sweep 2.4 s per turn) ---- */
+  --motion-fast: 150ms;
+  --motion-base: 200ms;
+  --motion-slow: 220ms;
+  --motion-sheet: 320ms;
+  --motion-sweep: 2.4s;
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --motion-ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /*
+   * ---- landing page (UI.md §16) ----
+   * Brand colours (the warm palette: Smoky Black #11120d, Olive Drab #565449, Bone #d8cfbc,
+   * Floral White #fffbf4), theme-invariant: the hero card stays a light "photograph" in
+   * both themes (the hero video has a white background) and is drawn with these directly.
+   */
+  --brand-ink: #11120d;
+  --brand-accent: #565449;
+  /* Olive Drab deepened a little: the cs.LG marquee tile. */
+  --brand-accent-deep: #4a483e;
+  --brand-tint: #e8e0d2;
+  --brand-accent-soft: #d8cfbc;
+  --brand-paper: #efe9dd;
+  --brand-muted: #565449;
+  --brand-hairline: #e2dacb;
+  --brand-white: #fffbf4;
+  --brand-chip-ink: #11120d;
+  --brand-relevant: #4f6b2f;
+  --brand-save: #8a6416;
+  --brand-card-shadow: 0 1px 2px rgba(17, 18, 13, 0.06), 0 24px 48px -24px rgba(17, 18, 13, 0.34);
+  /* Score-breakdown segments in the landing mocks (stacked in this order; same in both themes). */
+  --brand-feat-question: #2f6b62;
+  --brand-feat-anchor: #6a4c7a;
+  --brand-feat-draft: #b05a2a;
+  --brand-feat-citation: #3e5c80;
+  --brand-feat-preference: #b8862a;
+  --brand-feat-recency: #8f8a7a;
+
+  /* Themed landing tokens (light here, dark below). Checked by contrast.node.test.ts. */
+  --lp-bg: #fffbf4;
+  --lp-text: #11120d;
+  --lp-muted: #565449;
+  --lp-hairline: #e2dacb;
+  --lp-link: #3f3e35;
+  /* Ink cards: the statement, the footer and the "Why this paper" panel. */
+  --lp-ink: #11120d;
+  --lp-ink-border: #11120d;
+  --lp-on-ink: #fffbf4;
+  --lp-on-ink-muted: #d8cfbc;
+  /* Pill buttons and strong chips (ink in light, inverted in dark). */
+  --lp-button: #11120d;
+  --lp-on-button: #fffbf4;
+  /* Mock panels and tiles (tint, accent-soft, paper) and the cards on them. */
+  --lp-panel: #f3ede2;
+  --lp-panel-soft: #e8e0d2;
+  --lp-panel-paper: #efe9dd;
+  --lp-card: #fffefa;
+  --lp-card-border: #e2dacb;
+  --lp-card-shadow: 0 1px 2px rgba(17, 18, 13, 0.06), 0 24px 48px -24px rgba(17, 18, 13, 0.3);
+  --lp-chip: #f1ebdf;
+  --lp-chip-text: #565449;
+  --lp-cat-chip: #d8cfbc;
+  --lp-cat-chip-text: #11120d;
+  /* Marks in the mocks (≥ 3:1 on --lp-panel and --lp-card). */
+  --lp-relevant: #4f6b2f;
+  --lp-not-relevant: #a3402f;
+  --lp-save: #8a6416;
+  --lp-quiet: #67655a;
+  /* Graph mock edges (≥ 3:1 on --lp-panel-paper) and the author diamond. */
+  --lp-edge-cites: #3f5568;
+  --lp-edge-similar: #7a4e73;
+  --lp-edge-topic: #3f6b5e;
+  --lp-edge-authored: #9a5530;
+  --lp-author: #9a5530;
+  --lp-ring: rgba(255, 251, 244, 0.16);
+}
+
+[data-theme="dark"] {
+  /* ---- surfaces & text (UI.md §2 table, dark column) ---- */
+  --bg: #11120d;
+  --surface: #191a14;
+  --surface-2: #20211a;
+  --surface-3: #2a2b23;
+  --border: rgba(216, 207, 188, 0.12);
+  --border-strong: rgba(216, 207, 188, 0.24);
+  --text: #fffbf4;
+  --text-muted: #d8cfbc;
+  --text-faint: #b3ab98;
+
+  /* ---- brand ---- */
+  --accent: #d8cfbc;
+  --on-accent: #11120d;
+  --accent-glow: rgba(216, 207, 188, 0.26);
+  --accent-hover: #e8e1d2;
+
+  /* ---- paper states ---- */
+  --relevant: #9db872;
+  --not-relevant: #e08a72;
+  --save: #d9b25e;
+  --read: #b3ab98;
+
+  /* ---- graph edges ---- */
+  --edge-cites: #9db3c8;
+  --edge-similar: #c59cc0;
+  --edge-topic: #8cb8a8;
+  --edge-authored: #d99a6c;
+
+  /* ---- disruption labels ---- */
+  --disruptive: #d58ba8;
+  --consolidating: #8fb0cc;
+
+  /* ---- score-breakdown features (same hue families and order as light) ---- */
+  --feat-question: #7fb5aa;
+  --feat-anchor: #b39cc8;
+  --feat-keyword: #e3929b;
+  --feat-draft: #e0915e;
+  --feat-citation: #8fa9d0;
+  --feat-preference: #d9b25e;
+  --feat-recency: #9db872;
+
+  /* ---- overlays & elevation (UI.md §2: dark shadow plus a faint inner top highlight) ---- */
+  --overlay: rgba(6, 6, 4, 0.68);
+  --inner-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  --elevation-card: 0 18px 40px -18px rgba(0, 0, 0, 0.7), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  --elevation-raised: 0 26px 56px -20px rgba(0, 0, 0, 0.8), inset 0 1px 0 0 rgba(255, 255, 255, 0.07);
+  --elevation-overlay: 0 32px 80px -24px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(216, 207, 188, 0.06),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  --elevation-popover: 0 20px 48px -16px rgba(0, 0, 0, 0.75), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+
+  /* ---- decorative ---- */
+  --sheen: rgba(255, 255, 255, 0.028);
+  --backdrop-glow: 9%;
+  --backdrop-glow-2: 5%;
+
+  /* ---- landing page (UI.md §16; the --brand-* colours are theme-invariant) ---- */
+  --lp-bg: #11120d;
+  --lp-text: #fffbf4;
+  --lp-muted: #d8cfbc;
+  --lp-hairline: #2a2b23;
+  --lp-link: #d8cfbc;
+  --lp-ink: #1c1d17;
+  --lp-ink-border: #2e2f27;
+  --lp-on-ink: #fffbf4;
+  --lp-on-ink-muted: #d8cfbc;
+  --lp-button: #d8cfbc;
+  --lp-on-button: #11120d;
+  --lp-panel: #1a1b15;
+  --lp-panel-soft: #23241d;
+  --lp-panel-paper: #1e1f18;
+  --lp-card: #24251e;
+  --lp-card-border: #34352c;
+  --lp-card-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 24px 48px -22px rgba(0, 0, 0, 0.7);
+  --lp-chip: #2e2f27;
+  --lp-chip-text: #d8cfbc;
+  --lp-cat-chip: #3a3930;
+  --lp-cat-chip-text: #fffbf4;
+  --lp-relevant: #9db872;
+  --lp-not-relevant: #e08a72;
+  --lp-save: #d9b25e;
+  --lp-quiet: #b3ab98;
+  --lp-edge-cites: #9db3c8;
+  --lp-edge-similar: #c59cc0;
+  --lp-edge-topic: #8cb8a8;
+  --lp-edge-authored: #d99a6c;
+  --lp-author: #d99a6c;
+  --lp-ring: rgba(255, 251, 244, 0.14);
+}
