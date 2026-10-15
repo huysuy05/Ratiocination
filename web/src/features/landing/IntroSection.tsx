@@ -1,5 +1,10 @@
-/** "What it is" and "Get started": centred eyebrow, bold headline and pill buttons. */
+/**
+ * "What it is" and "Get started": centred eyebrow, bold headline and pill buttons. "Get started"
+ * speaks to a signed-in visitor too (the app's logo links here), offering their deck instead of a
+ * sign-up they already completed.
+ */
 import { Link } from "react-router";
+import { useMe } from "../../api/hooks";
 import { paths } from "../../app/paths";
 import { SECTION_IDS } from "./content";
 import { PillLink } from "./PillLink";
@@ -25,21 +30,31 @@ export function IntroSection() {
 }
 
 export function GetStartedSection() {
+  const me = useMe({ retry: false });  // 401 = signed out, the normal case here
+  const signedIn = me.data?.user != null;
   return (
     <section aria-labelledby="get-started-title" className="px-4 pt-20 pb-20 text-center sm:px-6 lg:pt-[120px] lg:pb-[110px]">
       <Reveal>
-        <p className="lp-eyebrow text-(--lp-muted)">Get started</p>
+        <p className="lp-eyebrow text-(--lp-muted)">{signedIn ? "Your deck" : "Get started"}</p>
         <h2 id="get-started-title" className={headlineClass}>
-          Sign in with Google, GitHub or email, and your first deck starts building right away.
+          {signedIn
+            ? "Your deck is waiting — a short stack of new papers, picked for your question."
+            : "Sign in with Google, GitHub or email, and your first deck starts building right away."}
         </h2>
         <div className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
-          <PillLink to={paths.signUp()}>Create an account</PillLink>
-          <Link
-            to={paths.signIn()}
-            className="inline-flex min-h-11 items-center rounded-[4px] px-2 text-[15px] font-semibold text-(--lp-link) underline-offset-4 hover:underline"
-          >
-            Sign in
-          </Link>
+          {signedIn ? (
+            <PillLink to={paths.root()}>Open my deck</PillLink>
+          ) : (
+            <>
+              <PillLink to={paths.signUp()}>Create an account</PillLink>
+              <Link
+                to={paths.signIn()}
+                className="inline-flex min-h-11 items-center rounded-[4px] px-2 text-[15px] font-semibold text-(--lp-link) underline-offset-4 hover:underline"
+              >
+                Sign in
+              </Link>
+            </>
+          )}
         </div>
       </Reveal>
     </section>

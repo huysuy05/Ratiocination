@@ -365,7 +365,8 @@ text and mark pairs in both themes. The page sets `<html class="lp-page">` while
 document background follows `--lp-bg`.
 
 Sections, top to bottom:
-1. Nav: logo lockup (Smoky Black + Olive Drab, or Floral White + Bone, by theme; recoloured copies of
+1. Nav (reads `me`: signed in → avatar + "Open app" → `/`; signed out → "Sign in"; "Get started"
+   likewise becomes "Your deck / Open my deck"): logo lockup (Smoky Black + Olive Drab, or Floral White + Bone, by theme; recoloured copies of
    `brand/logo` in `web/public/landing`), links in caps; below 768 px only How it works and
    Sign in remain, below 640 px only Sign in. A skip link leads to `#main`.
 2. Hero: the lockup is the page's only h1 (alt "Ratiocination" + a visually hidden one-line

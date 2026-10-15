@@ -22,9 +22,12 @@ test("/welcome renders the landing page with working links and no horizontal scr
   await page.goto("/welcome");
   await expect(page.getByRole("heading", { level: 1, name: /^Ratiocination/ })).toBeVisible();
   const nav = page.getByRole("navigation", { name: "Main" });
-  await expect(nav.getByRole("link", { name: "Sign in" })).toHaveAttribute("href", "/signin");
-  await expect(nav.getByRole("link", { name: "Sign in" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Create an account" })).toHaveAttribute("href", "/signup");
+  // This server runs in local mode, so `me` always succeeds and the page speaks to a signed-in
+  // reader: the app, not a sign-in it does not have. (Signed-out copy is covered by landing.test.tsx.)
+  await expect(nav.getByRole("link", { name: /Open the app as/i })).toHaveAttribute("href", "/");
+  await expect(nav.getByRole("link", { name: /Open the app as/i })).toBeVisible();
+  await expect(nav.getByRole("link", { name: "Sign in" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Open my deck" })).toHaveAttribute("href", "/");
   await expect(page.getByRole("heading", { level: 2, name: "How it works" })).toBeAttached();
   // The portrait loop picks the WebM source and starts muted.
   await expect.poll(() => page.evaluate(() => document.querySelector("video")?.currentSrc ?? "")).toMatch(/ratiocination-loop\.webm$/);

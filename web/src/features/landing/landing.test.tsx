@@ -1,8 +1,9 @@
 import { screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import LandingPage from "../../pages/LandingPage";
+import { makeMe } from "../../test/fixtures";
 import { setMatchMedia } from "../../test/matchMedia";
-import { renderWithProviders } from "../../test/utils";
+import { errorResponse, installTestTransport, jsonResponse, renderWithProviders } from "../../test/utils";
 
 beforeEach(() => {
   vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue(undefined);
@@ -14,6 +15,28 @@ function renderLanding() {
 }
 
 describe("LandingPage", () => {
+  /*
+   * The app shell's logo points at /welcome, so a signed-in reader lands here. Telling them to
+   * "Sign in" (as this page did until 2026-10-15) is wrong and leaves them no way back into the app.
+   */
+  describe("when the visitor is already signed in", () => {
+    beforeEach(() => {
+      installTestTransport((request) =>
+        request.path === "/api/me" ? jsonResponse(makeMe()) : errorResponse(501, "not_implemented", "not mocked"),
+      );
+    });
+
+    it("offers the app instead of sign in", async () => {
+      renderLanding();
+      const nav = screen.getByRole("navigation", { name: "Main" });
+      const openApp = await within(nav).findByRole("link", { name: /Open the app as Test User/i });
+      expect(openApp).toHaveAttribute("href", "/");
+      expect(within(nav).queryByRole("link", { name: "Sign in" })).toBeNull();
+      expect(await screen.findByRole("link", { name: "Open my deck" })).toHaveAttribute("href", "/");
+      expect(screen.queryByRole("link", { name: "Create an account" })).toBeNull();
+    });
+  });
+
   it("has one h1 (the logo) and landmarks", () => {
     renderLanding();
     const headings = screen.getAllByRole("heading", { level: 1 });

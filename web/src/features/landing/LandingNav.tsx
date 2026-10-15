@@ -1,9 +1,15 @@
 /**
  * Landing navigation: the logo lockup, then HOW IT WORKS · GRAPH · DASHBOARD (in-page anchors to the
- * matching sections) and SIGN IN. Narrow screens keep Sign in (and How it works from 640 px).
+ * matching sections) and, last, either SIGN IN or — when `me` says the visitor is already signed in —
+ * their avatar and "Open app" linking to `/` (which routes them to their project). The landing page is
+ * reachable from inside the app (the shell's logo points at `/welcome`), so it must not tell a
+ * signed-in user to sign in. `me` is already in the query cache for anyone who came from the app.
+ * Narrow screens keep that last item (and How it works from 640 px).
  */
 import { Link } from "react-router";
+import { useMe } from "../../api/hooks";
 import { paths } from "../../app/paths";
+import { UserAvatar } from "../../app/shell/UserMenu";
 import { useTheme } from "../../lib/theme";
 import { LANDING_ASSETS, SECTION_IDS } from "./content";
 
@@ -12,6 +18,9 @@ const linkClass =
 
 export function LandingNav() {
   const { resolved } = useTheme();
+  // 401 here is the normal signed-out answer, not an error worth retrying or reporting.
+  const me = useMe({ retry: false });
+  const user = me.data?.user ?? null;
   return (
     <header className="border-b border-(--lp-hairline)">
       <nav aria-label="Main" className="mx-auto flex h-[72px] w-full max-w-[1440px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-10">
@@ -41,9 +50,16 @@ export function LandingNav() {
             </a>
           </li>
           <li>
-            <Link to={paths.signIn()} className={linkClass}>
-              Sign in
-            </Link>
+            {user ? (
+              <Link to={paths.root()} className={`${linkClass} gap-2`} aria-label={`Open the app as ${user.display_name || user.email || "your account"}`}>
+                <UserAvatar user={user} size={26} />
+                <span className="hidden sm:inline">Open app</span>
+              </Link>
+            ) : (
+              <Link to={paths.signIn()} className={linkClass}>
+                Sign in
+              </Link>
+            )}
           </li>
         </ul>
       </nav>
