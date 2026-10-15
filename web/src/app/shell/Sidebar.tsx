@@ -89,8 +89,8 @@ export function Sidebar({ projectId }: { projectId: number | null }) {
     >
       <div className="flex h-16 shrink-0 items-center px-4 md:justify-center lg:justify-start lg:px-5">
         <Link
-          to={paths.root()}
-          aria-label="Ratiocination home"
+          to={paths.welcome()}
+          aria-label="Ratiocination — about this site"
           className="flex items-center rounded-control p-1 -m-1 text-text transition-opacity duration-150 hover:opacity-80"
         >
           {/* Icon rail (768–1023 px): the R mark; full sidebar: the lockup (mark + wordmark). */}

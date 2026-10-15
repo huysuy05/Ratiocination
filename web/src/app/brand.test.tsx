@@ -1,6 +1,6 @@
 /**
  * The brand logo (UI.md §2, §4, §6): the R mark and lockup in the app shell and the sign-in header,
- * inside links named "Ratiocination home", themed through currentColor and --accent.
+ * inside the brand links (the app shell points at /welcome, the sign-in page at /), themed through currentColor and --accent.
  */
 import { render, screen, within } from "@testing-library/react";
 import { createMemoryRouter } from "react-router";
@@ -54,11 +54,11 @@ describe("brand logo in the app", () => {
     await screen.findByRole("heading", { level: 1, name: "Projects" }, { timeout: 3000 });
 
     const sidebar = screen.getByRole("complementary", { name: "Sidebar" });
-    const sidebarHome = within(sidebar).getByRole("link", { name: "Ratiocination home" });
-    expect(sidebarHome).toHaveAttribute("href", "/");
+    const sidebarHome = within(sidebar).getByRole("link", { name: "Ratiocination — about this site" });
+    expect(sidebarHome).toHaveAttribute("href", "/welcome");  // the app logo opens the landing page, not the project redirect
     expect(brandSvgs(sidebarHome).map((svg) => svg.dataset.brand)).toEqual(["mark", "lockup"]);
 
-    const homeLinks = screen.getAllByRole("link", { name: "Ratiocination home" });
+    const homeLinks = screen.getAllByRole("link", { name: "Ratiocination — about this site" });
     expect(homeLinks).toHaveLength(2);
     const topBarHome = homeLinks.find((link) => link !== sidebarHome);
     expect(topBarHome && brandSvgs(topBarHome).map((svg) => svg.dataset.brand)).toEqual(["mark"]);

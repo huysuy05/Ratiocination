@@ -18,7 +18,7 @@ import { UserMenu, useSignOutAndLeave } from "./UserMenu";
 export function TopBar({ projectId }: { projectId: number | null }) {
   return (
     <header className="glass sticky top-0 z-30 flex h-[calc(3.5rem+env(safe-area-inset-top))] shrink-0 items-center gap-1 border-b border-border px-2 pt-[env(safe-area-inset-top)] md:hidden">
-      <Link to={paths.root()} aria-label="Ratiocination home" className="grid size-11 shrink-0 place-items-center rounded-button text-text">
+      <Link to={paths.welcome()} aria-label="Ratiocination — about this site" className="grid size-11 shrink-0 place-items-center rounded-button text-text">
         <BrandMark size={26} />
       </Link>
       <ProjectSwitcher projectId={projectId} variant="topbar" className="min-w-0 flex-1" />

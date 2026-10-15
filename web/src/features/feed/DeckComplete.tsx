@@ -18,7 +18,6 @@ export interface DeckCompleteProps {
 
 export const DeckComplete = forwardRef<HTMLHeadingElement, DeckCompleteProps>(function DeckComplete({ projectId, items, onMore, busy }, ref) {
   const counts = PAPER_STATES.map((state) => ({ state, n: items.filter((item) => item.state === state).length }));
-  const firstLiked = items.find((item) => item.state === "relevant" || item.state === "saved");
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96 }}
@@ -50,11 +49,9 @@ export const DeckComplete = forwardRef<HTMLHeadingElement, DeckCompleteProps>(fu
         })}
       </ul>
       <div className="flex flex-wrap justify-center gap-2">
-        {firstLiked ? (
-          <Button asChild variant="primary" leadingIcon={<Waypoints aria-hidden="true" />}>
-            <Link to={paths.graph(projectId, firstLiked.paper.id)}>Explore connections</Link>
-          </Button>
-        ) : null}
+        <Button asChild variant="primary" leadingIcon={<Waypoints aria-hidden="true" />}>
+          <Link to={paths.graph(projectId)}>Explore connections</Link>
+        </Button>
         <Button leadingIcon={<Plus aria-hidden="true" />} onClick={onMore} loading={busy}>
           More papers
         </Button>

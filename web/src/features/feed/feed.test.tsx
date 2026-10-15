@@ -142,7 +142,7 @@ describe("FeedPage", () => {
     const heading = await screen.findByRole("heading", { name: "Deck complete" });
     expect(heading).toBeInTheDocument();
     const summary = heading.closest("div")?.parentElement ?? document.body;
-    expect(within(summary).getByRole("link", { name: "Explore connections" })).toHaveAttribute("href", "/projects/1/graph/11");
+    expect(within(summary).getByRole("link", { name: "Explore connections" })).toHaveAttribute("href", "/projects/1/graph");  // the whole project graph, not one paper's neighbourhood
   });
 
   it("asks for categories when the project has none", async () => {
