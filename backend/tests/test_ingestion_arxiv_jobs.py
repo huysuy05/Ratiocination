@@ -14,10 +14,11 @@ from radar.ingestion.backfill import run_backfill
 from radar.ingestion.feeds import run_ingest_feeds
 from radar.jobs.runner import JobContext, JobFailed, run_job_sync
 from radar.models import IngestionWatermark, Job, Paper, SourceRecord
-from radar.net.http import SourceUnavailable
+from radar.net.http import EgressBlocked, SourceUnavailable
 
 FEED_RE = re.compile(r"^https://rss\.arxiv\.org/atom/")
 OAI_URL = "https://oaipmh.arxiv.org/oai"
+API_URL = "https://export.arxiv.org/api/query"
 FIXED_NOW = datetime(2026, 10, 12, 12, 0, tzinfo=UTC)  # the fixture day; keeps window tests stable
 
 
@@ -133,6 +134,82 @@ def test_backfill_fails_only_when_every_set_fails(http_mock, load_fixture, make_
     http_mock.routes.clear()
     http_mock.add("GET", OAI_URL, "busy", status=404)
     with pytest.raises(SourceUnavailable):
+        run_backfill(JobContext(project_id=project_id))
+
+
+def _api_query(request) -> dict[str, list[str]]:
+    return parse_qs(urlsplit(str(request.url)).query)
+
+
+def test_backfill_falls_back_to_the_arxiv_api_when_oai_is_throttled(
+    http_mock, load_fixture, make_project, monkeypatch, caplog
+):
+    """Production 2026-10-14: OAI-PMH hangs from the Fly machine while the query API answers in 3.6 s."""
+    monkeypatch.setattr(backfill_module, "utcnow", lambda: FIXED_NOW)
+    project_id = make_project(settings={"arxiv_categories": ["cs.SD"], "time_window_days": 14})
+    http_mock.add("GET", OAI_URL, "throttled", status=503)
+    http_mock.add("GET", API_URL, load_fixture("arxiv_api_query.xml"))
+
+    with caplog.at_level("WARNING"):
+        stats = run_job_sync("backfill", project_id=project_id)
+
+    assert stats["source"] == "arxiv_api" and stats["failed_sets"] == 1 and stats["pages"] == 0
+    assert stats["api_categories"] == 1 and stats["api_queries"] == 1
+    assert stats["records"] == 3 and stats["api_records"] == 3 and stats["created"] == 3
+    assert any("falling back to the arXiv query API" in r.getMessage() for r in caplog.records)
+    assert len(http_mock.calls(url_or_regex=OAI_URL)) == 2  # one attempt and one retry, not four
+    query = _api_query(http_mock.calls(url_or_regex=API_URL)[0])
+    assert query["search_query"] == ["cat:cs.SD AND submittedDate:[202609280000 TO 202610122359]"]
+    assert query["max_results"] == ["200"] and query["start"] == ["0"]
+    with session_scope() as s:
+        job = s.query(Job).order_by(Job.id.desc()).first()
+        assert job.status == "succeeded" and "arXiv API" in (job.message or "")
+    assert _counts()[0] == 3
+
+
+def test_backfill_uses_the_api_only_for_the_sets_that_failed(
+    http_mock, load_fixture, make_project, monkeypatch
+):
+    monkeypatch.setattr(backfill_module, "utcnow", lambda: FIXED_NOW)
+    project_id = make_project(settings={"arxiv_categories": ["cs.SD", "eess.AS"]})
+    http_mock.add("GET", re.compile(r"set=eess"), "throttled", status=503)
+    http_mock.add("GET", OAI_URL, _last_page(load_fixture))
+    http_mock.add("GET", API_URL, load_fixture("arxiv_api_query.xml"))
+
+    stats = run_backfill(JobContext(project_id=project_id))
+    assert stats["source"] == "arxiv_oai+arxiv_api" and stats["failed_sets"] == 1
+    assert stats["api_categories"] == 1 and stats["records"] == 4  # 1 from OAI (cs) + 3 from the API
+    queries = [_api_query(r)["search_query"][0] for r in http_mock.calls(url_or_regex=API_URL)]
+    assert queries == ["cat:eess.AS AND submittedDate:[202609280000 TO 202610122359]"]
+
+
+def test_backfill_fails_source_unavailable_when_both_sources_fail(http_mock, make_project, monkeypatch):
+    monkeypatch.setattr(backfill_module, "utcnow", lambda: FIXED_NOW)
+    project_id = make_project(settings={"arxiv_categories": ["cs.SD"]})
+    http_mock.add("GET", OAI_URL, "throttled", status=503)
+    http_mock.add("GET", API_URL, "busy", status=503)
+
+    with pytest.raises(SourceUnavailable):
+        run_backfill(JobContext(project_id=project_id))
+    with pytest.raises(JobFailed) as info:
+        run_job_sync("backfill", project_id=project_id)
+    assert info.value.error_code == "source_unavailable"
+    assert "arXiv API" in info.value.error_message and "http" not in info.value.error_message
+    with session_scope() as s:
+        job = s.query(Job).order_by(Job.id.desc()).first()
+        assert job.stats_json["api_failed"] is True and job.stats_json["failed_sets"] == 1
+
+
+def test_backfill_in_offline_mode_reaches_neither_source(make_project, monkeypatch):
+    """RADAR_OFFLINE=1 (the test default) blocks the harvest before any fallback is considered."""
+    monkeypatch.setattr(backfill_module, "utcnow", lambda: FIXED_NOW)
+
+    def never(*args, **kwargs):
+        raise AssertionError("the arXiv API must not be called while offline")
+
+    monkeypatch.setattr(backfill_module, "query_recent", never)
+    project_id = make_project(settings={"arxiv_categories": ["cs.SD"]})
+    with pytest.raises(EgressBlocked):
         run_backfill(JobContext(project_id=project_id))
 
 

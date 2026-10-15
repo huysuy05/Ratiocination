@@ -29,7 +29,8 @@ Private drafts are processed on the server and never sent to any third party.
 - **Language model**: none in ranking or explanations (templates). One optional use: the dashboard's
   AI summary of findings (§14.4), Claude via the Anthropic Messages API, only when
   `ANTHROPIC_API_KEY` is set, on public titles and abstracts only, labeled "AI-written".
-- **Sources**: arXiv RSS (daily), arXiv OAI-PMH (backfill), arXiv API (single lookups), OpenAlex
+- **Sources**: arXiv RSS (daily), arXiv OAI-PMH (backfill), arXiv API (single lookups, and the
+  backfill's fallback when OAI-PMH is throttled, §6), OpenAlex
   (enrichment, citations, disruption counts, authors), Semantic Scholar (citations; optional).
 - **Removed in v0.3** (never build): conformal/"high confidence" labels and calibration, the
   evaluation module, SPECTER2 vector fetching, Crossref, candidate generators, exploration slots,
@@ -355,6 +356,20 @@ v0.3 changes: remove the Crossref connector and pass (DOI seeds resolve through 
 SPECTER2 fetching (`run_fetch_vectors`) and seed-topic copying; the OpenAlex parser keeps
 `authorships[].author.id` so `paper_authors.openalex_author_id` is filled on enrichment.
 
+**Backfill sources and fallback** (`radar/ingestion/backfill.py`, since 2026-10-14). The `backfill` job
+harvests OAI-PMH per OAI set (`arXivRaw`, 60 s read timeout, one retry — a throttled page hangs, and 90 s
+and 120 s both timed out, so waiting longer buys nothing). For the categories of every set that fails it
+then queries the **arXiv API** (`cat:<category> AND submittedDate:[since TO until]`, 200 results per
+request, at most 5 pages per category) and upserts those records: arXiv throttles bulk OAI harvesting
+from cloud hosts (measured from the Fly machine on 2026-10-14: every `ListRecords` request timed out
+while the API answered in 3.6 s), and a new project with no papers is useless. Both paths go through
+`radar.net.http` (per-host intervals, breakers, budget, ledger, `RADAR_OFFLINE`), so offline mode blocks
+both and nothing bypasses the rate limits. `stats.source` is `arxiv_oai`, `arxiv_api` or
+`arxiv_oai+arxiv_api`, the fallback is logged as a warning, the final progress message names the API when
+it was used, and `stats.api_*` counts the fallback's own requests and records. The job fails
+`source_unavailable` only when both sources are unavailable (a partial OAI harvest keeps its papers and
+records `api_failed`).
+
 ## 7. Outbound HTTP *(built; v0.3 additions)*
 
 All egress goes through `radar.net.http.HttpClient` (per-host intervals, bounded retries, breakers,
@@ -362,7 +377,9 @@ OpenAlex budget, ledger rows with the path only). v0.3 adds providers:
 - `google` (`accounts.google.com` is never called by the server; `oauth2.googleapis.com`),
 - `github` (`github.com` token endpoint, `api.github.com`),
 - `anthropic` (`api.anthropic.com`, retry on 429/500/529, timeout 120 s),
-a `data=` (form body) argument and a `bearer=` argument (GitHub only). Ledger rows for these
+a `data=` (form body) argument, a `bearer=` argument (GitHub only) and a `max_retries=` argument that
+lowers (never raises) the retry budget of one call — used by the OAI-PMH harvest, which has a cheaper
+fallback (§6) and must not spend its read timeout four times over. Ledger rows for these
 providers have cost 0; token usage of AI summaries is stored on `findings_summaries`. Request bodies
 are never logged; the redaction
 filter also covers `client_secret`, `code`, `code_verifier`, `access_token`, `x-api-key` and the
@@ -653,6 +670,16 @@ Registry: `ingest_feeds`, `backfill`, `enrich`, `embed`, `build_deck` (`radar.jo
 created or its categories change). `daily`: ingest_feeds → backfill (projects whose window has < 50
 papers) → enrich → embed inline, delete expired sessions/tokens/oauth states, then queue
 `build_deck(daily)` per active project. The scheduler flag lives in `app_settings`.
+
+**Startup recovery** (`runner.recover_interrupted`, run from the lifespan before the executor starts).
+Every `queued`/`running` job counts as interrupted unless it is proven alive: its `worker_pid` is this
+process *and* this process still holds a reference to it, or another process that exists *and* started
+no later than the job's `started_at` (`created_at` while queued; Linux reads the process start time from
+`/proc/<pid>/stat` field 22 plus `/proc/stat` `btime`). A pid whose start time cannot be read counts as
+dead. The direction matters: a job wrongly left `running` holds its `dedupe_key` under `uq_jobs_active`
+forever, so every later job of that project answers `conflict` — on 2026-10-14 a container restart reused
+a `build_deck` worker's pid and that project could never build a deck again, while the only cost of the
+opposite mistake is one job failing `interrupted` and being retried.
 
 ## 16. Privacy and security
 

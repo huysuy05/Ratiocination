@@ -52,9 +52,14 @@ def query_by_ids(ids: list[str], **ctx: Any) -> list[PaperRecord]:
 
 
 def query_recent(
-    category: str, since: date, until: date, max_results: int = 200, **ctx: Any
+    category: str, since: date, until: date, max_results: int = 200, *, start: int = 0, **ctx: Any
 ) -> list[PaperRecord]:
-    """``cat:{c} AND submittedDate:[...]`` sorted by submittedDate descending."""
+    """``cat:{c} AND submittedDate:[...]`` sorted by submittedDate descending.
+
+    ``start`` is the offset into that result list, so a caller pages through a busy category with
+    ``start=0, max_results, 2 * max_results, …`` (the backfill does this when OAI-PMH is unavailable).
+    A page shorter than ``max_results`` is the last one.
+    """
     (cat,) = clean_categories([category])
     if since > until:
         raise ValueError("since must not be after until")
@@ -62,7 +67,7 @@ def query_recent(
         "search_query": f"cat:{cat} AND submittedDate:[{since:%Y%m%d}0000 TO {until:%Y%m%d}2359]",
         "sortBy": "submittedDate",
         "sortOrder": "descending",
-        "start": 0,
+        "start": max(0, int(start)),
         "max_results": min(max(1, int(max_results)), MAX_RESULTS_CAP),
     }
     return _query(params, ctx)

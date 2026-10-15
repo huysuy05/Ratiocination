@@ -177,8 +177,19 @@ def test_query_recent_params(http_mock, load_fixture):
     assert query["search_query"] == ["cat:cs.IR AND submittedDate:[202609280000 TO 202610122359]"]
     assert query["sortBy"] == ["submittedDate"] and query["sortOrder"] == ["descending"]
     assert query["max_results"] == ["2000"]  # clamped to arXiv's slice limit
+    assert query["start"] == ["0"]
     with pytest.raises(ValueError):
         query_recent("cs.IR", date(2026, 10, 12), date(2026, 9, 28))
+
+
+def test_query_recent_pages_with_start(http_mock, load_fixture):
+    """The backfill fallback pages through a busy category (start 0, 200, 400, ...)."""
+    http_mock.add("GET", API_URL, load_fixture("arxiv_api_query.xml"))
+    query_recent("cs.IR", date(2026, 9, 28), date(2026, 10, 12), 200, start=200)
+    query = parse_qs(urlsplit(str(http_mock.requests[0].url)).query)
+    assert query["start"] == ["200"] and query["max_results"] == ["200"]
+    query_recent("cs.IR", date(2026, 9, 28), date(2026, 10, 12), 200, start=-5)
+    assert parse_qs(urlsplit(str(http_mock.requests[1].url)).query)["start"] == ["0"]
 
 
 # ------------------------------------------------------------------------------------------------ store

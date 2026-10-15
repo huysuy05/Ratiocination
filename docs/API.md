@@ -63,9 +63,13 @@ type FeedbackSource = "deck" | "detail" | "library" | "graph" | "dashboard";
 interface Job {
   id: number; kind: JobKind; status: JobStatus; project_id: number | null;
   params: Record<string, unknown>; stats: Record<string, unknown>;
+  // `backfill` (and `build_deck(prepare)`'s `stats.backfill`) reports its source in `stats.source`:
+  // "arxiv_oai" | "arxiv_api" | "arxiv_oai+arxiv_api" ("arxiv_api" = OAI-PMH was unavailable and the
+  // arXiv API was used instead, SPEC §6); it fails `source_unavailable` only when both are unavailable.
   progress: number | null;      // 0..1 when known
   message: string | null;       // e.g. "Embedding 412 papers"
   error_code: string | null;    // source_unavailable | budget_exceeded | egress_blocked | interrupted | internal_error | …
+                                // `interrupted`: a job of a worker that did not survive (startup recovery, SPEC §15)
   error_message: string | null;
   created_at: ISODateTime; started_at: ISODateTime | null; finished_at: ISODateTime | null;
 }

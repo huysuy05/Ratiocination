@@ -10,8 +10,10 @@ Submitting
   the partial unique index ``uq_jobs_active`` makes this race-free (a losing insert's
   ``IntegrityError`` is caught inside a SAVEPOINT and the winner's id is returned). ``dedupe=False``
   adds a random nonce to the key (``jobs.dedupe_key`` is NOT NULL). An active duplicate whose
-  ``worker_pid`` is another process that no longer exists (e.g. a killed CLI run) is stale: it is
-  marked failed ``interrupted`` and a new job is queued.
+  ``worker_pid`` is another process that no longer exists (e.g. a killed CLI run), or whose pid now
+  belongs to a process that started after the job (a reused pid), is stale: it is marked failed
+  ``interrupted`` and a new job is queued. Rows inherited from an earlier boot are cleared by
+  :func:`recover_interrupted` at startup.
 * ``session=``: the row is inserted in the caller's session and dispatched only after that session's
   outermost transaction commits (session ``after_commit`` / ``after_transaction_end`` hooks; a
   SAVEPOINT release, a rollback or a close never dispatches). Without ``session`` the row is written in
@@ -60,7 +62,7 @@ from collections.abc import Callable, Mapping
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import AbstractContextManager
 from dataclasses import dataclass, field
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta
 from typing import Any, cast
 
 from sqlalchemy import CursorResult, event, select, update
@@ -84,6 +86,13 @@ RETRIES_EXHAUSTED_MESSAGE = "The job kept failing after 3 retries"
 
 _MAX_TEXT = 1000
 _INSERT_ATTEMPTS = 3
+_PID_START_GRACE = timedelta(seconds=5)
+"""How much later than a job's own timestamp its worker process may appear to have started.
+
+``/proc`` start times are computed from the boot time plus clock ticks, while the job timestamps come
+from the wall clock, so the two can differ slightly; a real worker always started *before* the job it
+claimed. A reused pid, in practice, starts minutes later (a machine restart), far outside this grace.
+"""
 _PENDING_KEY = "radar.jobs.pending"
 _COMMITTED_KEY = "radar.jobs.committed"
 
@@ -191,6 +200,90 @@ def _pid_alive(pid: int) -> bool:
     except OSError:
         return False
     return True
+
+
+def _boot_time() -> datetime | None:
+    """When the machine booted (aware UTC), from ``/proc/stat`` ``btime``; ``None`` without ``/proc``."""
+    try:
+        with open("/proc/stat", encoding="ascii") as handle:
+            for line in handle:
+                if line.startswith("btime "):
+                    return datetime.fromtimestamp(float(line.split()[1]), UTC)
+    except (OSError, ValueError, IndexError):
+        return None
+    return None
+
+
+def _clock_ticks() -> float:
+    try:
+        return float(os.sysconf("SC_CLK_TCK"))
+    except (AttributeError, ValueError, OSError):  # pragma: no cover - POSIX always has it
+        return 0.0
+
+
+def _starttime_ticks(raw: bytes) -> float | None:
+    """Field 22 (``starttime``, clock ticks since boot) of a ``/proc/<pid>/stat`` line (pure)."""
+    try:
+        # Field 2 (comm) is parenthesized and may contain spaces and ')', so count from the last ')':
+        # the first field after it is 3 (state), which makes field 22 (starttime) index 19.
+        fields = raw[raw.rindex(b")") + 1 :].split()
+        return float(fields[19])
+    except (ValueError, IndexError):
+        return None
+
+
+def _process_started_at(pid: int) -> datetime | None:
+    """When the process holding ``pid`` started (aware UTC), or ``None`` when that cannot be told.
+
+    Linux: ``/proc/<pid>/stat`` field 22 (``starttime``, in clock ticks since boot) plus ``btime`` from
+    ``/proc/stat`` and ``SC_CLK_TCK``. Platforms without ``/proc`` (macOS development machines) return
+    ``None``; the callers below say what they make of "unknown" - :func:`_worker_is_live` treats it as
+    dead, :func:`_pid_reused` only ever reports proven reuse.
+    """
+    if pid <= 0:
+        return None
+    boot = _boot_time()
+    ticks_per_second = _clock_ticks()
+    if boot is None or ticks_per_second <= 0:
+        return None
+    try:
+        with open(f"/proc/{pid}/stat", "rb") as handle:
+            raw = handle.read()
+    except OSError:
+        return None
+    ticks = _starttime_ticks(raw)
+    if ticks is None:  # pragma: no cover - a malformed /proc entry
+        return None
+    return boot + timedelta(seconds=ticks / ticks_per_second)
+
+
+def _pid_reused(pid: int, since: datetime | None) -> bool:
+    """True when the process holding ``pid`` *provably* started after ``since`` (so it is not the worker).
+
+    "Unknown" is never reuse: this guards the submit path, where a false "reused" would run a second
+    copy of a job another live process is still working on.
+    """
+    if since is None:
+        return False
+    started = _process_started_at(pid)
+    return started is not None and started > since + _PID_START_GRACE
+
+
+def _worker_is_live(pid: int, since: datetime | None) -> bool:
+    """True when ``pid`` can still be the worker of a job that reached ``since`` (startup recovery).
+
+    The pid must exist *and* its process must have started no later than the job did. Anything that
+    cannot be established counts as dead, which is the safe direction here: a false "dead" costs one
+    spuriously failed job, while a false "alive" keeps the row ``running`` forever and ``uq_jobs_active``
+    then rejects every later job with the same dedupe key (seen in production on 2026-10-14: after a
+    machine restart an unrelated process held the recorded ``worker_pid``, so that project could never
+    build another deck). PIDs are reused from low numbers on a fresh container, so a live pid alone is
+    no evidence at all.
+    """
+    if not _pid_alive(pid):
+        return False
+    started = _process_started_at(pid)
+    return started is not None and since is not None and started <= since + _PID_START_GRACE
 
 
 # ------------------------------------------------------------------------------------------------
@@ -533,9 +626,16 @@ def _find_active(session: Session, key: str) -> Job | None:
 
 
 def _is_stale(job: Job) -> bool:
-    """An active job owned by ANOTHER process that no longer exists."""
+    """An active job owned by ANOTHER process that no longer exists, or whose pid was proven reused.
+
+    Conservative on purpose (see :func:`_pid_reused`): an unreadable start time leaves the job alone, so
+    the caller gets the existing job instead of starting a duplicate. A row left behind by an earlier
+    boot of this container is cleared by :func:`recover_interrupted` at startup instead.
+    """
     pid = job.worker_pid
-    return pid is not None and pid != os.getpid() and not _pid_alive(pid)
+    if pid is None or pid == os.getpid():
+        return False
+    return not _pid_alive(pid) or _pid_reused(pid, job.started_at or job.created_at)
 
 
 def _mark_interrupted(job: Job) -> None:
@@ -923,20 +1023,32 @@ def run_job_sync(
 def recover_interrupted() -> int:
     """Mark queued/running jobs of dead workers failed ``interrupted``; returns the count.
 
-    A job is dead when its ``worker_pid`` is null, is not a live process, or is this process while
-    this process holds no reference to it (left over from an earlier process with the same pid).
+    A job counts as dead unless it is proven alive, because a job wrongly left ``running`` blocks its
+    dedupe key forever (``uq_jobs_active``). It is alive only when its ``worker_pid`` is
+
+    * this process and this process still holds a reference to it (:func:`_live_here`), or
+    * another process that exists *and* started no later than the job's own ``started_at``
+      (``created_at`` while it is still queued) - see :func:`_worker_is_live`.
+
+    So a null ``worker_pid``, a pid that is gone, a pid this process no longer tracks, a pid whose
+    process started after the job (reused after a restart) and a pid whose start time cannot be read at
+    all are all treated as dead. Run at startup, this clears every job of an earlier boot.
     """
     db.check_not_holding_write("recover_interrupted")
     me = os.getpid()
     with db.session_scope(write=True) as session:
-        rows = session.execute(select(Job.id, Job.worker_pid).where(Job.status.in_(ACTIVE_STATUSES))).all()
+        rows = session.execute(
+            select(Job.id, Job.worker_pid, Job.started_at, Job.created_at).where(
+                Job.status.in_(ACTIVE_STATUSES)
+            )
+        ).all()
         live_here = _live_here()  # after the SELECT: every row it saw was tracked before its commit
         dead: list[int] = []
-        for job_id, pid in rows:
+        for job_id, pid, started_at, created_at in rows:
             if pid == me:
                 if job_id in live_here:
                     continue
-            elif pid is not None and _pid_alive(pid):
+            elif pid is not None and _worker_is_live(pid, started_at or created_at):
                 continue
             dead.append(job_id)
         if not dead:

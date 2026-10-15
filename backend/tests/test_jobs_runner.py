@@ -11,7 +11,8 @@ import sys
 import threading
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -100,6 +101,18 @@ def dead_pid() -> int:
     proc = subprocess.Popen([sys.executable, "-c", "pass"])
     proc.wait()
     return proc.pid
+
+
+@pytest.fixture
+def process_starts(monkeypatch: pytest.MonkeyPatch) -> dict[int, datetime]:
+    """Patch ``runner._process_started_at``: ``{pid: start time}``; pids left out are unknown (``None``).
+
+    Real start times are only readable on Linux (``/proc``), so every test about the alive/dead decision
+    injects them and the real reader is checked separately.
+    """
+    starts: dict[int, datetime] = {}
+    monkeypatch.setattr(runner, "_process_started_at", lambda pid: starts.get(pid))
+    return starts
 
 
 def echo(ctx: runner.JobContext, **params: Any) -> dict[str, Any]:
@@ -846,9 +859,10 @@ def test_active_job(make_project: Callable[..., int]) -> None:
 
 
 def test_recover_interrupted_marks_jobs_of_dead_workers(
-    executor_mode: None, kinds: Register, gate: threading.Event
+    executor_mode: None, kinds: Register, gate: threading.Event, process_starts: dict[int, datetime]
 ) -> None:
     kinds("test_block", lambda ctx, **p: {"ok": gate.wait(10)})
+    process_starts[os.getppid()] = datetime(2020, 1, 1, tzinfo=UTC)  # long before any job below
     live_here = runner.submit_job("test_block")  # running in this process: untouched
     dead = insert_job("enrich", key="k1", status="running", worker_pid=dead_pid())
     no_pid = insert_job("enrich", key="k2", status="queued", worker_pid=None)
@@ -872,6 +886,92 @@ def test_recover_interrupted_marks_jobs_of_dead_workers(
     gate.set()
     assert runner.wait_idle(timeout=10)
     assert job_row(live_here).status == "succeeded"
+
+
+def test_recover_interrupted_reclaims_a_job_whose_pid_was_reused(
+    process_starts: dict[int, datetime],
+) -> None:
+    """Production 2026-10-14: after a machine restart an unrelated process held the worker pid."""
+    pid = os.getppid()  # a live pid; only its start time decides
+    started = datetime(2026, 10, 14, 23, 54, 25, tzinfo=UTC)
+    job_id = insert_job("build_deck", key="k1", status="running", worker_pid=pid, started_at=started)
+    process_starts[pid] = started + timedelta(minutes=8)  # the process booted after the job started
+
+    assert runner._pid_alive(pid)  # the old "pid exists" test would have kept this job running
+    assert runner.recover_interrupted() == 1
+    assert (job_row(job_id).status, job_row(job_id).error_code) == ("failed", "interrupted")
+
+    # A worker that started before the job it claimed stays alive.
+    other = insert_job("build_deck", key="k2", status="running", worker_pid=pid, started_at=started)
+    process_starts[pid] = started - timedelta(minutes=1)
+    assert runner.recover_interrupted() == 0
+    assert job_row(other).status == "running"
+
+
+def test_recover_interrupted_reclaims_a_pid_without_a_readable_start_time(
+    executor_mode: None, kinds: Register, gate: threading.Event, process_starts: dict[int, datetime]
+) -> None:
+    """No start time (no ``/proc``) = no proof of life: dead, unless this process still holds the job."""
+    kinds("test_block", lambda ctx, **p: {"ok": gate.wait(10)})
+    live_here = runner.submit_job("test_block")
+    unknown = insert_job(
+        "enrich", key="k1", status="running", worker_pid=os.getppid(), started_at=models.utcnow()
+    )
+    assert process_starts == {}  # every start time is unknown
+    assert runner.recover_interrupted() == 1
+    assert job_row(unknown).error_code == "interrupted"
+    assert job_row(live_here).status in ("queued", "running")
+    gate.set()
+    assert runner.wait_idle(timeout=10)
+    assert job_row(live_here).status == "succeeded"
+
+
+def test_submit_replaces_a_job_whose_pid_was_reused(
+    kinds: Register, process_starts: dict[int, datetime]
+) -> None:
+    kinds("test_echo", echo)
+    pid = os.getppid()
+    started = models.utcnow() - timedelta(hours=2)
+    reused_key = runner.dedupe_key("test_echo", None, {"v": 1})
+    reused = insert_job("test_echo", key=reused_key, status="running", worker_pid=pid, started_at=started)
+    process_starts[pid] = started + timedelta(hours=1)
+    fresh = runner.submit_job("test_echo", params={"v": 1})
+    assert fresh != reused and job_row(reused).error_code == "interrupted"
+    assert job_row(fresh).status == "succeeded"
+
+    # Unknown start time on the submit path: the live job is returned, never run a second time.
+    unknown_key = runner.dedupe_key("test_echo", None, {"v": 2})
+    unknown = insert_job(
+        "test_echo", key=unknown_key, status="running", worker_pid=pid, started_at=models.utcnow()
+    )
+    process_starts.clear()
+    assert runner.submit_job("test_echo", params={"v": 2}) == unknown
+    assert job_row(unknown).status == "running"
+
+
+def test_starttime_ticks_reads_field_22_of_a_proc_stat_line() -> None:
+    """Real Linux layout: comm is parenthesized and may hold spaces and ')'."""
+    line = (
+        b"652 (radar serve (1)) S 1 652 652 0 -1 4194560 2951 0 0 0 83 21 0 0 20 0 9 0 8641523 "
+        b"1234567 4096 18446744073709551615 1 1 0 0 0 0 0 0 0 0 0 0 17 0 0 0 0 0 0\n"
+    )
+    assert runner._starttime_ticks(line) == 8641523.0
+    assert runner._starttime_ticks(b"652 (radar) S 1 652\n") is None  # truncated
+    assert runner._starttime_ticks(b"not a stat line") is None
+
+
+def test_process_started_at_reads_proc_or_says_it_cannot() -> None:
+    """The real reader: a time on Linux, ``None`` where there is no ``/proc`` (macOS development)."""
+    started = runner._process_started_at(os.getpid())
+    if Path("/proc/self/stat").exists():
+        assert started is not None
+        assert timedelta(0) <= models.utcnow() - started < timedelta(days=30)
+        assert runner._worker_is_live(os.getpid(), models.utcnow())
+    else:
+        assert started is None
+        assert not runner._worker_is_live(os.getpid(), models.utcnow())
+    assert runner._process_started_at(-1) is None
+    assert not runner._pid_reused(os.getpid(), None)  # no reference time: never "reused"
 
 
 def test_lifecycle_hooks_are_idempotent() -> None:

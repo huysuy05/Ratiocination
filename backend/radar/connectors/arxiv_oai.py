@@ -1,7 +1,10 @@
 """arXiv OAI-PMH harvesting (``arXivRaw``) for the project backfill (SPEC §7–8). Owner: ingest.
 
 Why OAI-PMH: it is arXiv's interface for bulk metadata, and on 2026-10-12 it answered in seconds while
-the query API throttled us (30 s hang, then HTTP 429). ``from``/``until`` select records by
+the query API throttled us (30 s hang, then HTTP 429). That is no longer true from a cloud host: on
+2026-10-14 every ``ListRecords`` request from the Fly.io machine hung until the read timeout while the
+query API answered in 3.6 s, so ``radar.ingestion.backfill`` treats this connector as the preferred
+source and falls back to :mod:`radar.connectors.arxiv_api`. ``from``/``until`` select records by
 *datestamp* (last change), so old papers whose metadata changed in the window come back too; the
 backfill filters on the v1 date and the project's categories. Format verified against
 ``tests/fixtures/arxiv_oai_raw_page.xml``: ``<version version="vN"><date>RFC 2822</date>`` history,
@@ -33,6 +36,16 @@ NS_RAW = "http://arxiv.org/OAI/arXivRaw/"
 DEFAULT_MAX_PAGES = 30
 """A page holds up to ~1300 records; 30 pages covers a busy group (cs) for well over two weeks."""
 
+PAGE_TIMEOUT_S = 60.0
+"""Read timeout for one ``ListRecords`` page. A healthy page answers in seconds; from a cloud host
+arXiv throttles bulk harvesting and the connection simply hangs (measured from Fly.io on 2026-10-14:
+``Identify`` 200 in 0.3 s, ``ListRecords`` timed out at 90 s *and* at 120 s), so waiting longer buys
+nothing - the backfill falls back to the arXiv query API instead."""
+
+PAGE_MAX_RETRIES = 1
+"""Retries per page (instead of the client's 3): a throttled endpoint costs 2 attempts, not 4, so the
+fallback starts after ~2 min instead of ~8."""
+
 _GROUP_ARCHIVES = frozenset({"cs", "math", "stat", "q-bio", "q-fin", "eess", "econ"})
 _WITHDRAWN_RE = re.compile(r"\bwithdrawn\b", re.I)
 
@@ -57,7 +70,8 @@ def harvest(
 
     Follows resumption tokens up to ``max_pages`` (a warning is logged when the cap cuts the harvest
     short). ``noRecordsMatch`` yields one empty page. Raises ``SourceUnavailable`` for a non-200 answer
-    and ``ValueError`` for an OAI-PMH protocol error.
+    and for a page that keeps timing out (:data:`PAGE_TIMEOUT_S`, :data:`PAGE_MAX_RETRIES`), and
+    ``ValueError`` for an OAI-PMH protocol error.
     """
     if since > until:
         raise ValueError("since must not be after until")
@@ -75,7 +89,8 @@ def harvest(
             provider="arxiv",
             call_type="list",
             params=params,
-            timeout=120.0,
+            timeout=PAGE_TIMEOUT_S,
+            max_retries=PAGE_MAX_RETRIES,
             job_id=ctx.get("job_id"),
             project_id=ctx.get("project_id"),
         )

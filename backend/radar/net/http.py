@@ -16,7 +16,8 @@ All outbound HTTP goes through :class:`HttpClient` (CONVENTIONS "Python style").
    request is sent; a ``cost_ledger`` row is enqueued on the background writer with the endpoint path
    (never the query string), status, unit cost, cost and the job/project from the arguments or
    :func:`call_context`, plus the OpenAlex ``x-ratelimit-*`` headers in ``meta_json``.
-5. **Retries**: up to :data:`MAX_RETRIES` on 429/500/502/503/504/529 and connection errors, sleeping
+5. **Retries**: up to :data:`MAX_RETRIES` (a call may lower that with ``max_retries=``) on
+   429/500/502/503/504/529 and connection errors, sleeping
    ``min(30, 2**n) + Retry-After`` seconds before retry ``n`` (2, 4, 8 s without ``Retry-After``); a
    ``Retry-After`` above :data:`MAX_RETRY_AFTER_S` ends the call at once. Exhausted retries raise
    :class:`SourceUnavailable`. OpenAlex 429 with ``x-ratelimit-remaining-usd <= 0`` raises
@@ -447,15 +448,19 @@ class HttpClient:
         headers: dict[str, str] | None = None,
         bearer: str | None = None,
         timeout: float = 30.0,
+        max_retries: int | None = None,
         job_id: int | None = None,
         project_id: int | None = None,
     ) -> httpx.Response:
         """Send one request (with retries) and record it in the cost ledger (SPEC §7).
 
         ``json`` and ``data`` (form fields) are mutually exclusive; ``bearer`` (an OAuth access token)
-        is accepted for GitHub only. Returns the response for any status other than the retried ones.
-        Raises ``RuntimeError`` (strict mode, holding a write transaction), ``ValueError`` (call not
-        allowed), :class:`EgressBlocked`, :class:`BudgetExceeded` or :class:`SourceUnavailable`.
+        is accepted for GitHub only. ``max_retries`` lowers :data:`MAX_RETRIES` for this call (never
+        raises it): a caller with a cheap alternative - the backfill, which falls back to the arXiv API
+        when OAI-PMH is throttled - should not spend ``timeout`` four times over first. Returns the
+        response for any status other than the retried ones. Raises ``RuntimeError`` (strict mode,
+        holding a write transaction), ``ValueError`` (call not allowed), :class:`EgressBlocked`,
+        :class:`BudgetExceeded` or :class:`SourceUnavailable`.
         """
         db.check_not_holding_write("HttpClient.request")
         if db.holding_write_transaction():
@@ -494,6 +499,7 @@ class HttpClient:
             project_id=project_id if project_id is not None else ctx_project_id,
         )
 
+        limit = MAX_RETRIES if max_retries is None else max(0, min(int(max_retries), MAX_RETRIES))
         retries = 0
         while True:
             outcome = self._attempt(call)
@@ -524,7 +530,7 @@ class HttpClient:
                 retry_after = parse_retry_after(response.headers.get("retry-after"))
 
             failure = f"HTTP {status}" if status is not None else (outcome.error_name or "no response")
-            if retries >= MAX_RETRIES or (retry_after is not None and retry_after > MAX_RETRY_AFTER_S):
+            if retries >= limit or (retry_after is not None and retry_after > MAX_RETRY_AFTER_S):
                 log.warning("%s %s: %s; giving up after %d attempt(s)", provider, path, failure, retries + 1)
                 raise SourceUnavailable(
                     provider, status, retry_after, message=_unavailable_message(provider, path, status)
@@ -533,9 +539,7 @@ class HttpClient:
             delay = min(MAX_BACKOFF_S, 2.0**retries) + (retry_after or 0.0)
             if retry_after:
                 self._defer_host(host, retry_after)
-            log.warning(
-                "%s %s: %s; retry %d/%d in %.2f s", provider, path, failure, retries, MAX_RETRIES, delay
-            )
+            log.warning("%s %s: %s; retry %d/%d in %.2f s", provider, path, failure, retries, limit, delay)
             self.sleep(delay)
 
     # -- internals ---------------------------------------------------------------------------------

@@ -437,6 +437,25 @@ def test_a_long_retry_after_ends_the_call_without_waiting(clock: FakeClock) -> N
     assert len(server.requests) == 1 and clock.sleeps == []
 
 
+def test_max_retries_lowers_the_budget_for_one_call(clock: FakeClock) -> None:
+    """The OAI-PMH harvest uses this: a throttled endpoint must not cost four long timeouts."""
+    server = Server(clock, resp(503))
+    with pytest.raises(SourceUnavailable):
+        lookup(make_client(clock, server), FEED, "arxiv", max_retries=1)
+    assert len(server.requests) == 2 and clock.sleeps == [2.0]
+
+    once = Server(clock, resp(503))
+    with pytest.raises(SourceUnavailable):
+        lookup(make_client(clock, once), FEED, "arxiv", max_retries=0)
+    assert len(once.requests) == 1 and clock.sleeps == [2.0]  # no further sleep
+
+    # It can only lower the limit, never raise it above MAX_RETRIES.
+    many = Server(clock, resp(503))
+    with pytest.raises(SourceUnavailable):
+        lookup(make_client(clock, many), FEED, "arxiv", max_retries=99)
+    assert len(many.requests) == net_http.MAX_RETRIES + 1
+
+
 @pytest.mark.parametrize("status", [200, 204, 302, 304, 400, 401, 404, 501, 599])
 def test_other_statuses_are_returned_without_retry(clock: FakeClock, status: int) -> None:
     server = Server(clock, resp(status, headers={"Location": "https://example.org/elsewhere"}))
