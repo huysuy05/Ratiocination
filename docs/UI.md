@@ -79,7 +79,7 @@ not_relevant → `--not-relevant`/x/"Not relevant"; saved → `--save`/bookmark/
 
 ## 4. App shell, routes, auth gate
 
-- ≥ 1024 px: 248 px sidebar — logo lockup (22 px tall, links home), project switcher (+ "New
+- ≥ 1024 px: 248 px sidebar — logo lockup (22 px tall, links to `/welcome` — the landing page; `/` would redirect a signed-in user back into their project), project switcher (+ "New
   project"), project nav (Feed, Library, Graph, Documents, Project settings), workspace nav (Dashboard,
   Projects, Settings), theme switcher, privacy badge ("Private" — links to Settings → Privacy), user
   menu (avatar or initials, name, email, Settings, Sign out; hidden in local mode). 768–1023 px: icon
